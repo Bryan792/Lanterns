@@ -1,5 +1,6 @@
 const shuffle = require('lodash.shuffle');
 const range = require('lodash.range');
+const _ = require('lodash');
 
 const COLOR_ORANGE = 'Orange';
 const COLOR_GREEN = 'Green';
@@ -50,6 +51,7 @@ function LanternsGame(players) {
     tradeFavors: tradeFavors,
     buyDedication: buyDedication,
     printGrid: printGrid,
+    getPlayerData: getPlayerData,
   }
   for (let dir in players) {
     game.players[dir] = generatePlayer(players[dir]);
@@ -92,29 +94,29 @@ function LanternsGame(players) {
   }
 
   function generateTileOrder() {
-    let arr = range(1,36);
+    let arr = range(1, 36);
   }
 
   function placeTile(playerDir, tileIdx, x, y) {
     let player = game.players[playerDir];
     //Correct player?
     if (playerDir !== game.turn) {
-      console.log("Wrong player");
+      console.log('Wrong player');
       return;
     }
     //If player has more than 12 lanterns, he must discard to 12 first
     let handCount = Object.keys(player.lanterns).reduce((previous, color) => previous + player.lanterns[color], 0);
     if (handCount > 12) {
-      console.log("Player must make a dedication or discard up to 12");
+      console.log('Player must make a dedication or discard up to 12');
       return;
     }
     //check if tile is valid (not played before, owned by player)
     if (tileIdx > 36 || tileIdx < 1) {
-      console.log("Tile not in valid range");
+      console.log('Tile not in valid range');
       return;
     }
     if (!player.hand.includes(tileIdx)) {
-      console.log("Tile not in player's hand");
+      console.log('Tile not in hand');
       return;
     }
     //check if position is valid
@@ -141,7 +143,7 @@ function LanternsGame(players) {
     });
 
     if (valid === false || adjacent.length === 0) {
-      console.log("Invalid");
+      console.log('Invalid');
       return;
     }
 
@@ -187,14 +189,14 @@ function LanternsGame(players) {
   function progressTurn() {
     game.turn = DIR_ARRAY[(DIR_ARRAY.indexOf(game.turn) + 1) % DIR_ARRAY.length];
     game.turnStep = 0;
-    console.log("It is now " + game.players[game.turn].name + " 's turn");
+    console.log('It is now ' + game.players[game.turn].name + ' turn');
   }
 
   function giveLantern(player, color) {
     if (game.lanterns[color] > 0) {
       game.players[player].lanterns[color]++;
       game.lanterns[color]--;
-      console.log(game.players[player].name + " got a " + color + ". " + JSON.stringify(game.players[player].lanterns) + " " + game.lanterns[color] + " remain");
+      console.log(game.players[player].name + ' got a ' + color + '. ' + JSON.stringify(game.players[player].lanterns) + ' ' + game.lanterns[color] + ' remain');
     }
   }
 
@@ -202,7 +204,7 @@ function LanternsGame(players) {
     if (game.favors > 0) {
       game.players[player].favors++;
       game.favors--;
-      console.log(game.players[player].name + " got a favor. " + game.favors + " remain");
+      console.log(game.players[player].name + ' got a favor. ' + game.favors + ' remain');
     }
   }
 
@@ -211,27 +213,27 @@ function LanternsGame(players) {
     //validate
     //Correct player?
     if (playerDir !== game.turn) {
-      console.log("Wrong player");
+      console.log('Wrong player');
       return;
     }
     //Correct turn?
     if (game.turnStep > 0) {
-      console.log("Player played this out of order");
+      console.log('Player played this out of order');
       return;
     }
     //Does player have 2 favors?
     if (player.tokens < 2) {
-      console.log("Less than 2 favors");
+      console.log('Less than 2 favors');
       return;
     }
     //Does player have giveColor?
     if (player.lanterns[giveColor] < 1) {
-      console.log("Not enough to give");
+      console.log('Not enough to give');
       return;
     }
     //Are there any getColor left?
     if (game.lanterns[getColor] < 1) {
-      console.log("Not enough to get");
+      console.log('Not enough to get');
       return;
     }
 
@@ -242,7 +244,7 @@ function LanternsGame(players) {
     game.lanterns[giveColor]++;
     game.lanterns[getColor]--;
     game.turnStep = 1;
-    console.log(player.name + " traded a " + giveColor + " for a " + getColor);
+    console.log(player.name + ' traded a ' + giveColor + ' for a ' + getColor);
   }
 
   function buyDedication(playerDir, dedicationType, lanterns) {
@@ -250,61 +252,61 @@ function LanternsGame(players) {
     //validate
     //Correct player?
     if (playerDir !== game.turn) {
-      console.log("Wrong player");
+      console.log('Wrong player');
       return;
     }
     //Correct turn?
     if (game.turnStep > 1) {
-      console.log("Player played this out of order");
+      console.log('Player played this out of order');
       return;
     }
     //any dedicationType left?
-    if (game.dedications[dedicationType] === 0 && game.dedication["fours"] === 0) {
-      console.log("cannot buy anymore");
+    if (game.dedications[dedicationType] === 0 && game.dedication['fours'] === 0) {
+      console.log('cannot buy anymore');
       return;
     }
     //player has specified lanterns?
     for (let color in lanterns) {
       if (lanterns[color] > player.lanterns[color]) {
-        console.log("you do not have enough lanterns");
+        console.log('you do not have enough lanterns');
         return
       }
     }
     //lanterns match dedication type
     //TODO: can refactor
-    if (dedicationType === "uniques") {
+    if (dedicationType === 'uniques') {
       if (Object.keys(lanterns).length !== 7) {
-        console.log("wrong number of lanterns given");
+        console.log('wrong number of lanterns given');
         return;
       }
       for (let color in lanterns) {
         //TODO: Check color names?
         if (lanterns[color] !== 1) {
-          console.log("wrong number of lanterns given");
+          console.log('wrong number of lanterns given');
           return;
         }
       }
-    } else if (dedicationType === "threePair") {
+    } else if (dedicationType === 'threePair') {
       if (Object.keys(lanterns).length !== 3) {
-        console.log("wrong number of lanterns given");
+        console.log('wrong number of lanterns given');
         return;
       }
       for (let color in lanterns) {
         //TODO: Check color names?
         if (lanterns[color] !== 2) {
-          console.log("wrong number of lanterns given");
+          console.log('wrong number of lanterns given');
           return;
         }
       }
-    } else if (dedicationType === "fourOfAKind") {
+    } else if (dedicationType === 'fourOfAKind') {
       if (Object.keys(lanterns).length !== 1) {
-        console.log("wrong number of lanterns given");
+        console.log('wrong number of lanterns given');
         return;
       }
       for (let color in lanterns) {
         //TODO: Check color names?
         if (lanterns[color] !== 4) {
-          console.log("wrong number of lanterns given");
+          console.log('wrong number of lanterns given');
           return;
         }
       }
@@ -312,10 +314,10 @@ function LanternsGame(players) {
 
     //Valid
     if (game.dedications[dedicationType] === 0)
-      dedicationType = "fours";
+      dedicationType = 'fours';
     let points = game.dedications[dedicationType].shift();
     player.points += points;
-    console.log(player.name + " gained " + points + " points");
+    console.log(player.name + ' gained ' + points + ' points');
 
     for (let color in lanterns) {
       let count = lanterns[color];
@@ -340,7 +342,7 @@ function LanternsGame(players) {
         [COLOR_RED]: 0,
         [COLOR_BLACK]: 0,
       },
-      hand: [game.tileOrder.pop(),game.tileOrder.pop(),game.tileOrder.pop()],
+      hand: [game.tileOrder.pop(), game.tileOrder.pop(), game.tileOrder.pop()],
       favors: 0,
       points: 0,
     }
@@ -348,28 +350,43 @@ function LanternsGame(players) {
 
   function printGrid() {
     for (let i = 0; i < 73; i++) {
-      let row0 = "";
-      let row1 = "";
-      let row2 = "";
+      let row0 = '';
+      let row1 = '';
+      let row2 = '';
       for (let j = 0; j < 73; j++) {
         if (!game.grid.some(tile => {
             if (tile.x === i && tile.y === j) {
-              row0 += " " + game.tiles[tile.tileIdx][DIR_NORTH][0] + " "
-              row1 += game.tiles[tile.tileIdx][DIR_WEST][0] + (game.tiles[tile.tileIdx].dragon ? "D" : " ") + game.tiles[tile.tileIdx][DIR_EAST][0];
-              row2 += " " + game.tiles[tile.tileIdx][DIR_SOUTH][0] + " "
+              row0 += ' ' + game.tiles[tile.tileIdx][DIR_NORTH][0] + ' '
+              row1 += game.tiles[tile.tileIdx][DIR_WEST][0] + (game.tiles[tile.tileIdx].dragon ? 'D' : ' ') + game.tiles[tile.tileIdx][DIR_EAST][0];
+              row2 += ' ' + game.tiles[tile.tileIdx][DIR_SOUTH][0] + ' '
               return true;
             }
             return false;
           })) {
-          row0 += "   ";
-          row1 += "   ";
-          row2 += "   ";
+          row0 += '   ';
+          row1 += '   ';
+          row2 += '   ';
         }
       }
       console.log(row0);
       console.log(row1);
       console.log(row2);
     }
+  }
+
+  function getPlayerData(playerDir) {
+    let allPlayerData = _.pick(game, ['grid', 'lanterns', 'favors', 'dedications', 'turn', 'turnStep']);
+    allPlayerData.players = _.mapValues(game.players, (player, dir) => {
+      let playerData = _.pick(player, ['name', 'lanterns', 'favors', 'points']);
+      if (dir === playerDir) {
+        playerData.hand = player.hand.map(tileIdx => Object.assign({
+          tileIdx: tileIdx
+        }, game.tiles[tileIdx])
+        );
+      }
+      return playerData;
+    });
+    return allPlayerData;
   }
 }
 
