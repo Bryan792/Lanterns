@@ -396,12 +396,9 @@ function LanternsGame(players) {
     let allPlayerData = _.pick(game, ['grid', 'lanterns', 'favors', 'dedications', 'turn', 'turnStep']);
     allPlayerData.players = _.mapValues(game.players, (player, dir) => {
       let playerData = _.pick(player, ['name', 'lanterns', 'favors', 'points']);
-      if (dir === playerDir) {
-        playerData.hand = player.hand.map(tileIdx => Object.assign({
-          tileIdx: tileIdx
-        }, game.tiles[tileIdx])
-        );
-      }
+      playerData.hand = player.hand.map(tileIdx => Object.assign({
+        tileIdx: tileIdx
+      }, game.tiles[tileIdx]));
       return playerData;
     });
     return allPlayerData;
