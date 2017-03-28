@@ -24,3 +24,8 @@ export const addPlayer = (direction: string, name: string) => (dispatch: Functio
   // Does this belong here or in some other middleware?
   socket.emit('player', `${direction} ${name}`)
 }
+
+export const startGame = () => (dispatch: Function, getState: Function, socket: object) => {
+  // Does this belong here or in some other middleware?
+  socket.emit('start', '')
+}

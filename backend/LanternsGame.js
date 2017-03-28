@@ -53,6 +53,7 @@ function LanternsGame(players) {
     printGrid: printGrid,
     getPlayerData: getPlayerData,
     addPlayer: addPlayer,
+    startGame: startGame,
   }
   return game;
 
@@ -72,7 +73,7 @@ function LanternsGame(players) {
     //Deal hands here maybe instead?
 
     //TODO: random
-    turnStep = DIR_NORTH;
+    game.turn = DIR_NORTH;
   }
 
   function getRandColor() {
