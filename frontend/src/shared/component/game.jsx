@@ -11,15 +11,17 @@ class Game extends React.Component {
 
   props: {
     gameId: string,
-    loadGame: Function,
-    addPlayer: Function,
-    gameData: object,
+      loadGame: Function,
+      addPlayer: Function,
+      gameData: object,
   }
 
   render() {
     return (
       <div>
-        <PlayerSelector handleSubmit={this.props.addPlayer} />
+        {['NORTH', 'EAST', 'SOUTH', 'WEST'].map(dir =>
+         (this.props.gameData) && <PlayerSelector handleSubmit={this.props.addPlayer} direction={dir} player={this.props.gameData.players[dir]} />,
+        )}
         {JSON.stringify(this.props.gameData)}
       </div>
     )

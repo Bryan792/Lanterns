@@ -5,27 +5,20 @@ class PlayerSelector extends React.Component {
   constructor(props: props) {
     super(props)
     this.state = {
-      direction: 'NORTH',
       name: '',
     }
-    this.handleDirectionChange = this.handleDirectionChange.bind(this)
     this.handleNameChange = this.handleNameChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   state: {
-    direction: string,
     name: string,
   }
 
   props: {
     handleSubmit: Function,
-  }
-
-  handleDirectionChange(event: Event) {
-    this.setState({
-      direction: event.target.value,
-    })
+    player: ?{name: string},
+    direction: string,
   }
 
   handleNameChange(event: Event) {
@@ -35,22 +28,23 @@ class PlayerSelector extends React.Component {
   }
 
   handleSubmit(event: Event) {
-    this.props.handleSubmit(this.state.direction, this.state.name)
+    this.props.handleSubmit(this.props.direction, this.state.name)
     event.preventDefault()
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <select value={this.state.direction} onChange={this.handleDirectionChange}>
-          <option value="NORTH">North</option>
-          <option value="EAST">East</option>
-          <option value="SOUTH">South</option>
-          <option value="WEST">West</option>
-        </select>
-        <input type="text" value={this.state.name} onChange={this.handleNameChange} />
-        <input type="submit" value="Submit" />
-      </form>
+      <div>
+        { this.props.player ?
+          <div>{this.props.direction} {this.props.player.name}</div>
+        :
+          <form onSubmit={this.handleSubmit}>
+            <label htmlFor="name">{this.props.direction}</label>
+            <input id="name" type="text" value={this.state.name} onChange={this.handleNameChange} />
+            <input type="submit" value="Submit" />
+          </form>
+      }
+      </div>
     )
   }
 }
