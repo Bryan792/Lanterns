@@ -4,9 +4,9 @@ import React from 'react'
 import Helmet from 'react-helmet'
 
 import { APP_NAME } from '../../config'
-import SearchBar from '../searchbar'
+import Game from '../../container/game'
 
-const HomePage = () =>
+const GamePage = (props: {match: {params: {gameId: string}}}) =>
   <div>
     <Helmet
       meta={[
@@ -14,8 +14,8 @@ const HomePage = () =>
         { property: 'og:title', content: APP_NAME },
       ]}
     />
-    <h1>{APP_NAME}</h1>
-    <SearchBar />
+    <h1>Game Page {props.match.params.gameId}</h1>
+    <Game gameId={props.match.params.gameId} />
   </div>
 
-export default HomePage
+export default GamePage

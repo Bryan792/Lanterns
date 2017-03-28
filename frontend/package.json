@@ -12,7 +12,7 @@
     "prod:build": "rimraf lib dist && babel src -d lib --ignore .test.js && cross-env NODE_ENV=production webpack -p --progress",
     "prod:start": "cross-env NODE_ENV=production pm2 start lib/server && pm2 logs",
     "prod:stop": "pm2 delete server",
-    "lint": "eslint src webpack.config.babel.js --ext .js,.jsx",
+    "lint": "eslint src webpack.config.babel.js --ext .js,.jsx --fix",
     "test": "yarn lint && flow && jest --coverage",
     "precommit": "yarn test",
     "prepush": "yarn test && yarn prod:build"
@@ -32,7 +32,8 @@
     "react-router-dom": "next",
     "redux": "^3.6.0",
     "redux-actions": "^2.0.1",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "socket.io-client": "^1.7.3"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",

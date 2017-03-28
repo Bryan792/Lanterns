@@ -45,18 +45,35 @@ function LanternsGame(players) {
       fourOfAKind: [8, 7, 7, 6, 6, 5, 5, 5, 4],
       fours: [4, 4, 4],
     },
-    turn: DIR_NORTH,
+    turn: 'NEW_GAME',
     turnStep: 0,
     placeTile: placeTile,
     tradeFavors: tradeFavors,
     buyDedication: buyDedication,
     printGrid: printGrid,
     getPlayerData: getPlayerData,
-  }
-  for (let dir in players) {
-    game.players[dir] = generatePlayer(players[dir]);
+    addPlayer: addPlayer,
   }
   return game;
+
+  function addPlayer(dir, name) {
+    //TODO: check if spot exists
+    game.players[dir] = generatePlayer(name);
+  }
+
+  function addPlayers(players) {
+    //TODO: check if spot exists
+    for (let dir in players) {
+      game.players[dir] = generatePlayer(players[dir]);
+    }
+  }
+
+  function startGame() {
+    //Deal hands here maybe instead?
+
+    //TODO: random
+    turnStep = DIR_NORTH;
+  }
 
   function getRandColor() {
     let rand = Math.floor(Math.random() * COLOR_ARRAY.length)
