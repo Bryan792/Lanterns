@@ -17,7 +17,6 @@ export const loadGameAsync = (gameId: string) => (dispatch: Function, getState: 
   socket.emit('id', gameId)
 }
 
-
 export const addPlayer = (direction: string, name: string) => (dispatch: Function, getState: Function, socket: object) => {
   // Does this belong here or in some other middleware?
   socket.emit('player', `${direction} ${name}`, (result) => {
