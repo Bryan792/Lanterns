@@ -18,12 +18,14 @@ io.on('connection', function(socket) {
     io.to(gameId).emit('gameData', games[gameId].getPlayerData());
   });
 
-  socket.on('player', function(player) {
+  socket.on('player', function(player, fn) {
     console.log(player);
     //TODO check input
     let args = player.split(' ');
     playerDir = args[0];
     games[gameId].addPlayer(args[0], args[1]);
+    //TODO Check for success
+    fn('SUCCESS');
     io.to(gameId).emit('gameData', games[gameId].getPlayerData());
   });
 

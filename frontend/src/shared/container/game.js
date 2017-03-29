@@ -10,6 +10,7 @@ import Game from '../component/game'
 
 const mapStateToProps = state => ({
   gameData: state.game.get('gameData'),
+  playerDir: state.game.get('playerDir'),
 })
 
 const mapDispatchToProps = dispatch => ({
