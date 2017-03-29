@@ -11,6 +11,7 @@ io.on('connection', function(socket) {
   socket.on('id', function(id) {
     console.log(id);
     gameId = id;
+    playerDir = '';
     if (!games[gameId]) {
       games[gameId] = LanternsGame();
     }
@@ -20,6 +21,10 @@ io.on('connection', function(socket) {
 
   socket.on('player', function(player, fn) {
     console.log(player);
+    if (playerDir) {
+      console.log('already a dir ' + playerDir); 
+      return;
+    }
     //TODO check input
     let args = player.split(' ');
     playerDir = args[0];
