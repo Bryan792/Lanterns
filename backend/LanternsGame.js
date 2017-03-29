@@ -373,14 +373,14 @@ function LanternsGame(players) {
       let row2 = '';
       for (let j = 0; j < 73; j++) {
         if (!game.grid.some(tile => {
-            if (tile.x === i && tile.y === j) {
-              row0 += ' ' + game.tiles[tile.tileIdx][DIR_NORTH][0] + ' '
-              row1 += game.tiles[tile.tileIdx][DIR_WEST][0] + (game.tiles[tile.tileIdx].dragon ? 'D' : ' ') + game.tiles[tile.tileIdx][DIR_EAST][0];
-              row2 += ' ' + game.tiles[tile.tileIdx][DIR_SOUTH][0] + ' '
-              return true;
-            }
-            return false;
-          })) {
+          if (tile.x === i && tile.y === j) {
+            row0 += ' ' + game.tiles[tile.tileIdx][DIR_NORTH][0] + ' '
+            row1 += game.tiles[tile.tileIdx][DIR_WEST][0] + (game.tiles[tile.tileIdx].dragon ? 'D' : ' ') + game.tiles[tile.tileIdx][DIR_EAST][0];
+            row2 += ' ' + game.tiles[tile.tileIdx][DIR_SOUTH][0] + ' '
+            return true;
+          }
+          return false;
+        })) {
           row0 += '   ';
           row1 += '   ';
           row2 += '   ';
@@ -392,8 +392,11 @@ function LanternsGame(players) {
     }
   }
 
-  function getPlayerData(playerDir) {
-    let allPlayerData = _.pick(game, ['grid', 'lanterns', 'favors', 'dedications', 'turn', 'turnStep']);
+  function getPlayerData() {
+    let allPlayerData = _.pick(game, ['lanterns', 'favors', 'dedications', 'turn', 'turnStep']);
+    allPlayerData.grid = game.grid.map( tile =>
+      Object.assign({}, game.tiles[tile.tileIdx], tile)
+    );
     allPlayerData.players = _.mapValues(game.players, (player, dir) => {
       let playerData = _.pick(player, ['name', 'lanterns', 'favors', 'points']);
       playerData.hand = player.hand.map(tileIdx => Object.assign({
