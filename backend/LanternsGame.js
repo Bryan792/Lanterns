@@ -171,9 +171,8 @@ function LanternsGame(players) {
       if (dir in adjacent) {
         let adjacentTile = game.tiles[adjacent[dir].tileIdx];
         let oppositeDir = DIR_ARRAY[(DIR_ARRAY.indexOf(dir) + 2) % DIR_ARRAY.length];
-        if (adjacentTile[dir] === currentTile[oppositeDir]) { //matched
-          console.log(adjacentTile[dir]);
-          giveLantern(playerDir, adjacentTile[dir]);
+        if (adjacentTile[oppositeDir] === currentTile[dir]) { //matched
+          giveLantern(playerDir, currentTile[dir]);
           //check dragon for currentTile
           //only 1 favor can be given for currentTile even if multiple matches
           if (!favorGiven && currentTile.dragon) {
