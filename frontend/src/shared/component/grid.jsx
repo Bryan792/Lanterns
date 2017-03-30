@@ -7,7 +7,7 @@ class Grid extends React.Component {
   props: {
   grid: {},
   selectedHandTile: {},
-  selectedGridCoord: {},
+  selectedGridCoord: ?{},
   selectGridCoord: Function,
   }
 
