@@ -1,20 +1,8 @@
 // @flow
 
-import {
-  homePage,
-  helloPage,
-  helloAsyncPage,
-  helloEndpoint,
-} from './controller'
+import { homePage, helloPage, helloAsyncPage, helloEndpoint } from './controller'
 
-import {
-  HOME_PAGE_ROUTE,
-  HELLO_PAGE_ROUTE,
-  HELLO_ASYNC_PAGE_ROUTE,
-  helloEndpointRoute,
-  GAME_HOME_PAGE_ROUTE,
-  gameRoute,
-} from '../shared/routes'
+import { HOME_PAGE_ROUTE, HELLO_PAGE_ROUTE, HELLO_ASYNC_PAGE_ROUTE, helloEndpointRoute, GAME_HOME_PAGE_ROUTE, gameRoute } from '../shared/routes'
 
 import renderApp from './render-app'
 

@@ -29,19 +29,20 @@ const store = createStore(combineReducers({
   hello: helloReducer,
   game: gameReducer,
 }),
-  { hello: Immutable.fromJS(preloadedState.hello) },
+  {
+    hello: Immutable.fromJS(preloadedState.hello),
+  },
   composeEnhancers(applyMiddleware(thunkMiddleware.withExtraArgument(socket))))
 
 const rootEl = document.querySelector(APP_CONTAINER_SELECTOR)
 
-const wrapApp = (AppComponent, reduxStore) =>
-  <Provider store={reduxStore}>
-    <BrowserRouter>
-      <AppContainer>
-        <AppComponent />
-      </AppContainer>
-    </BrowserRouter>
-  </Provider>
+const wrapApp = (AppComponent, reduxStore) => <Provider store={reduxStore}>
+  <BrowserRouter>
+    <AppContainer>
+      <AppComponent />
+    </AppContainer>
+  </BrowserRouter>
+</Provider>
 
 ReactDOM.render(wrapApp(App, store), rootEl)
 
