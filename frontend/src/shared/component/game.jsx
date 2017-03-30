@@ -4,7 +4,8 @@ import { withRouter } from 'react-router'
 
 import PlayerSelector from './player-selector'
 import Button from './button'
-import Player from './player'
+import Player from '../container/player'
+import Grid from '../container/grid'
 
 class Game extends React.Component {
   componentDidMount() {
@@ -23,7 +24,7 @@ class Game extends React.Component {
   render() {
     return (
       <div>
-        {['NORTH', 'EAST', 'SOUTH', 'WEST'].map(dir => (this.props.gameData) && <PlayerSelector handleSubmit={this.props.addPlayer} direction={dir} player={this.props.gameData.players[dir]} />,
+        {['North', 'East', 'South', 'West'].map(dir => (this.props.gameData) && <PlayerSelector handleSubmit={this.props.addPlayer} direction={dir} player={this.props.gameData.players[dir]} key={dir} />,
       )}
         {this.props.playerDir && this.props.gameData && this.props.gameData.players[this.props.playerDir] &&
         <div>
@@ -33,6 +34,7 @@ class Game extends React.Component {
         }
         <h2>{this.props.gameData.turn}</h2>
         <Button label="Start Game" handleClick={this.props.startGame} />
+        {this.props.gameData && <Grid />}
         <p>{JSON.stringify(this.props.gameData)}</p>
       </div>
     )

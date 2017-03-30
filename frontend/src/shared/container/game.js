@@ -11,6 +11,7 @@ import Game from '../component/game'
 const mapStateToProps = state => ({
   gameData: state.game.get('gameData'),
   playerDir: state.game.get('playerDir'),
+  selectedHandTile: state.game.get('selectedHandTile'),
 })
 
 const mapDispatchToProps = dispatch => ({
