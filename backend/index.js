@@ -38,7 +38,13 @@ io.on('connection', function(socket) {
     console.log(`${gameId} starting`);
     games[gameId].startGame();
     io.to(gameId).emit('gameData', games[gameId].getPlayerData());
-  })
+  });
+
+  socket.on('placeTile', ({tileIdx, x, y,}) => {
+    console.log(`${tileIdx} at ${x} ${y}`)
+    games[gameId].placeTile(playerDir, tileIdx, x, y);
+    io.to(gameId).emit('gameData', games[gameId].getPlayerData());
+  });
 
 });
 

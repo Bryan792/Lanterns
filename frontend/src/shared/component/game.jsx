@@ -19,6 +19,7 @@ class Game extends React.Component {
   loadGame: Function,
   addPlayer: Function,
   startGame: Function,
+  placeTile: Function,
   }
 
   render() {
@@ -35,6 +36,7 @@ class Game extends React.Component {
         <h2>{this.props.gameData.turn}</h2>
         <Button label="Start Game" handleClick={this.props.startGame} />
         {this.props.gameData && <Grid />}
+        <Button label="Place Tile" handleClick={this.props.placeTile} />
         <p>{JSON.stringify(this.props.gameData)}</p>
       </div>
     )

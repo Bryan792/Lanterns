@@ -152,9 +152,9 @@ function LanternsGame(players) {
           adjacent[DIR_NORTH] = tile;
         }
       } else if (tile.y === y) {
-        if (tile.y === x + 1) {
+        if (tile.x === x + 1) {
           adjacent[DIR_EAST] = tile;
-        } else if (tile.y === x - 1) {
+        } else if (tile.x === x - 1) {
           adjacent[DIR_WEST] = tile;
         }
       }

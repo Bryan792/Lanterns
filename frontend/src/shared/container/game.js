@@ -5,6 +5,7 @@ import {
   loadGameAsync,
   addPlayer,
   startGame,
+  placeTile,
 } from '../action/game'
 import Game from '../component/game'
 
@@ -18,6 +19,7 @@ const mapDispatchToProps = dispatch => ({
   loadGame: (gameId: string) => { dispatch(loadGameAsync(gameId)) },
   addPlayer: (direction: string, name: string) => { dispatch(addPlayer(direction, name)) },
   startGame: () => { dispatch(startGame()) },
+  placeTile: () => { dispatch(placeTile()) },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game)

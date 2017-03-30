@@ -20,7 +20,7 @@ const initialState = Immutable.fromJS({
 const gameReducer = (state: Immut = initialState, action: { type: string, payload: any }) => {
   switch (action.type) {
     case LOAD_GAME_ASYNC_SUCCESS:
-      return state.set('gameData', action.payload)
+      return state.set('gameData', action.payload).delete('selectedGridCoord')
     case PLAYER_SELECTED:
       return state.set('playerDir', action.payload)
     case SELECT_HAND_TILE:

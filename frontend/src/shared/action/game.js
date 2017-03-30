@@ -32,3 +32,17 @@ export const startGame = () => (dispatch: Function, getState: Function, socket: 
   // Does this belong here or in some other middleware?
   socket.emit('start', '')
 }
+
+export const placeTile = () => (dispatch: Function, getState: Function, socket: object) => {
+  const state = getState()
+  // TODO rename tileIdx already a thing, this is idx in hand
+  const selectedHandTileIdx = state.game.get('playerDir') && state.game.get('selectedHandTileIdx') > -1 && state.game.get('gameData') && state.game.get('gameData').players[state.game.get('playerDir')] ? state.game.get('gameData').players[state.game.get('playerDir')].hand[state.game.get('selectedHandTileIdx')].tileIdx : undefined
+  const selectedGridCoord = state.game.get('selectedGridCoord')
+  if (selectedHandTileIdx && selectedGridCoord) {
+    socket.emit('placeTile', {
+      tileIdx: selectedHandTileIdx,
+      x: selectedGridCoord.x,
+      y: selectedGridCoord.y,
+    })
+  }
+}
