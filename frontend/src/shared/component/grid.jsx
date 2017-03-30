@@ -5,7 +5,7 @@ import Tile from './tile'
 class Grid extends React.Component {
 
   props: {
-  grid: {},
+  grid: [],
   selectedHandTile: {},
   selectedGridCoord: ?{},
   selectGridCoord: Function,
@@ -88,6 +88,7 @@ class Grid extends React.Component {
           display: 'flex',
           flexDirection: 'column',
         }}
+        key={x}
       >{row}</div>)
     }
     return (
