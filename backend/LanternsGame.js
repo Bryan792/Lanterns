@@ -200,6 +200,9 @@ function LanternsGame(players) {
       y: y,
     });
 
+    //remove tile from player and give new tile
+    player.hand.splice(player.hand.indexOf(tileIdx), 1, game.tileOrder.pop());
+
     //progressTurn
     progressTurn();
   }
