@@ -46,6 +46,11 @@ io.on('connection', function(socket) {
     io.to(gameId).emit('gameData', games[gameId].getPlayerData());
   });
 
+  socket.on('tradeFavors', ({giveColor, getColor}) => {
+    console.log(`${giveColor} for ${getColor}`);
+    games[gameId].tradeFavors(playerDir, giveColor, getColor);
+    io.to(gameId).emit('gameData', games[gameId].getPlayerData());
+  });
 });
 
 io.listen(3000);

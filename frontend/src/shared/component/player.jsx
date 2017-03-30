@@ -7,22 +7,33 @@ type Props = {
 player: {
 },
 selectedHandTileIdx: number,
+selectedHandLantern: ?string,
 selectHandTile: Function,
+selectHandLantern: Function,
 }
 
-// TODO: button here?
-const Player = ({ player, selectedHandTileIdx, selectHandTile }: Props) => <div>
+const style = {
+  boxSizing: 'border-box',
+  margin: 0,
+  padding: 0,
+  border: 0,
+  WebkitAppearance: 'none',
+  MozAppearance: 'none',
+}
+
+// TODO: button here? check keys
+const Player = ({ player, selectedHandTileIdx, selectHandTile, selectedHandLantern, selectHandLantern }: Props) => <div>
   <h3>{player.name}</h3>
   {player.hand.map((tile, index) => <button
     style={{
+      ...style,
       height: 100,
       width: 100,
-      border: 0,
-      padding: 0,
       backgroundColor: selectedHandTileIdx === index ? 'yellow' : 'grey',
     }} onClick={() => {
       selectHandTile(index)
     }}
+    key={tile.tileIdx}
   ><Tile tile={tile} size={100} /></button>,
   )}
   <div
@@ -32,17 +43,20 @@ const Player = ({ player, selectedHandTileIdx, selectHandTile }: Props) => <div>
     }}
   >
     {
-  Object.keys(player.lanterns).sort((color1, color2) => player.lanterns[color2] - player.lanterns[color1]).map(color => <div
+  Object.keys(player.lanterns).sort((color1, color2) => player.lanterns[color2] - player.lanterns[color1]).map(color => <button
     style={{
-      boxSizing: 'border-box',
+      ...style,
       height: 70,
       width: 40,
       borderStyle: 'solid',
-      borderColor: 'black',
+      borderColor: color === selectedHandLantern ? 'yellow' : 'black',
+      border: 2,
     }}
+    onClick={() => { selectHandLantern(color) }}
+    key={color}
   >
     <Lantern color={color} count={player.lanterns[color]} />
-  </div>,
+  </button>,
   )}
   </div>
   <div>{player.favors} favors</div>
