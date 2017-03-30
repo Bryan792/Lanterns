@@ -2,20 +2,6 @@ import React from 'react'
 
 import Tile from './tile'
 
-/*
-let row = [];
-for (let i = 0; i < 73; i++)
-  row.push(<Card card={{
-    "North": "Black",
-    "East": "Orange",
-    "South": "Green",
-    "West": "Purple",
-    "dragon": false,
-    "tileIdx": 0,
-    "x": 36,
-    "y": 36
-  }} />)
-  */
 class Grid extends React.Component {
 
   props: {

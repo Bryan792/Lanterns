@@ -15,7 +15,7 @@
     "lint": "yarn format && eslint src webpack.config.babel.js --ext .js,.jsx",
     "lint:fix": "yarn format && eslint src webpack.config.babel.js --ext .js,.jsx --fix",
     "format": "esformatter -i src/**/*.js && esformatter -i src/**/*.jsx",
-    "test": "yarn lint && flow && jest --coverage",
+    "test": "yarn lint:fix && flow && jest --coverage",
     "precommit": "yarn test",
     "prepush": "yarn test && yarn prod:build"
   },
