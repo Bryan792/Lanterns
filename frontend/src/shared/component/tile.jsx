@@ -17,7 +17,7 @@ const Tile = ({ tile, size }: Props) => {
   }
 
   return (
-    <div style={style} />
+    <div style={style}>{tile.dragon && 'D'}</div>
   )
 }
 
