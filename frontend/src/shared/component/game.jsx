@@ -85,12 +85,15 @@ class Game extends React.Component {
       // TODO Explain
       const threePairColors = Object.keys(lanterns).filter(color => lanterns[color] >= 2)
       if (threePairColors.length >= 3) {
-        possibleDedications.threePair =
-          Combinatorics.combination(
-            threePairColors
-            .map(color => ({ [color]: 2 })), 3)
+        possibleDedications.threePair = Combinatorics.combination(
+          threePairColors
+            .map(color => ({
+              [color]: 2,
+            })), 3)
           .toArray()
-          .map(arrayOfArrays => arrayOfArrays.reduce((acc, lantern) => ({ ...acc, ...lantern }), {}))
+          .map(arrayOfArrays => arrayOfArrays.reduce((acc, lantern) => ({
+            ...acc, ...lantern,
+          }), {}))
       }
 
       const fourSameColors = Object.keys(lanterns).filter(color => lanterns[color] >= 4)
@@ -103,67 +106,77 @@ class Game extends React.Component {
 
     return (
       <div>
-        {['North', 'East', 'South', 'West'].map(dir => (gameData) && <PlayerSelector handleSubmit={addPlayer} direction={dir} player={gameData.players[dir]} key={dir} />,
-      )}
-        {playerDir && gameData && gameData.players[playerDir] &&
+        {gameData &&
         <div>
-          <h2>You are {playerDir}</h2>
-          <Player player={gameData.players[playerDir]} />
+          {gameData.turn === 'NEW_GAME' ?
+            <div>
+              {DIR_ARRAY.map(dir => <PlayerSelector handleSubmit={addPlayer} direction={dir} player={gameData.players[dir]} key={dir} shouldShowSubmit={!playerDir} />)}
+              <Button label="Start Game" handleClick={startGame} />
+            </div>
+        :
+            <div>
+              {playerDir && gameData && gameData.players[playerDir] &&
+              <div>
+                <h2>You are {playerDir}</h2>
+                <Player player={gameData.players[playerDir]} />
+              </div>
+        }
+              <h2>{gameData.turn}</h2>
+              {gameData && <Grid />}
+
+
+              {gameData &&
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                }}
+              >
+                {
+        Object.keys(gameData.lanterns).sort((color1, color2) => gameData.lanterns[color2] - gameData.lanterns[color1]).map(color => <button
+          style={{
+            ...style,
+            height: 70,
+            width: 40,
+            borderStyle: 'solid',
+            borderColor: color === selectedGridLantern ? 'yellow' : 'black',
+            border: 2,
+            margin: 2,
+          }}
+          onClick={() => {
+            selectGridLantern(color)
+          }}
+          key={color}
+        >
+          <Lantern color={color} count={gameData.lanterns[color]} />
+        </button>,
+        )}
+              </div>}
+
+              { gameData &&
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                }}
+              >
+                {
+        ['uniques', 'threePair', 'fourOfAKind']
+          .filter(type => gameData.dedications[type].length > 0,
+        )
+          .map(type => <div key={type}><Dedication points={gameData.dedications[type][0]} type={type} />
+            {possibleDedications[type].length > 0 &&
+            <DedicationSelector onDedicationSelected={buyDedication} type={type} possibleDedications={possibleDedications[type]} />}
+          </div>)}
+              </div>}
+
+              <Button label="Trade Favors" handleClick={tradeFavors} />
+              <Button label="Place Tile" handleClick={placeTile} />
+            </div>
+      }
+          <p>{JSON.stringify(gameData)}</p>
         </div>
       }
-        <h2>{gameData.turn}</h2>
-        <Button label="Start Game" handleClick={startGame} />
-        {gameData && <Grid />}
-
-
-        {gameData &&
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-          }}
-        >
-          {
-      Object.keys(gameData.lanterns).sort((color1, color2) => gameData.lanterns[color2] - gameData.lanterns[color1]).map(color => <button
-        style={{
-          ...style,
-          height: 70,
-          width: 40,
-          borderStyle: 'solid',
-          borderColor: color === selectedGridLantern ? 'yellow' : 'black',
-          border: 2,
-          margin: 2,
-        }}
-        onClick={() => {
-          selectGridLantern(color)
-        }}
-        key={color}
-      >
-        <Lantern color={color} count={gameData.lanterns[color]} />
-      </button>,
-      )}
-        </div>}
-
-        { gameData &&
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-          }}
-        >
-          {
-      ['uniques', 'threePair', 'fourOfAKind']
-        .filter(type => gameData.dedications[type].length > 0,
-      )
-      .map(type => <div key={type}><Dedication points={gameData.dedications[type][0]} type={type} />
-        {possibleDedications[type].length > 0 &&
-        <DedicationSelector onDedicationSelected={buyDedication} type={type} possibleDedications={possibleDedications[type]} />}
-      </div>)}
-        </div>}
-
-        <Button label="Trade Favors" handleClick={tradeFavors} />
-        <Button label="Place Tile" handleClick={placeTile} />
-        <p>{JSON.stringify(gameData)}</p>
       </div>
     )
   }

@@ -19,6 +19,7 @@ class PlayerSelector extends React.Component {
     handleSubmit: Function,
     player: ?{name: string},
     direction: string,
+    shouldShowSubmit: Function,
   }
 
   handleNameChange(event: Event) {
@@ -33,17 +34,28 @@ class PlayerSelector extends React.Component {
   }
 
   render() {
+    const {
+      player,
+      direction,
+      shouldShowSubmit,
+    } = this.props
+    let row
+    if (player) {
+      row = <div>{direction} {player.name}</div>
+    } else if (!shouldShowSubmit) {
+      row = <div>{direction}</div>
+    } else {
+      row =
+        (<form onSubmit={this.handleSubmit}>
+          <label htmlFor="name">{direction}</label>
+          <input id="name" type="text" value={this.state.name} onChange={this.handleNameChange} />
+          <input type="submit" value="Submit" />
+        </form>)
+    }
+
     return (
       <div>
-        { this.props.player ?
-          <div>{this.props.direction} {this.props.player.name}</div>
-        :
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor="name">{this.props.direction}</label>
-            <input id="name" type="text" value={this.state.name} onChange={this.handleNameChange} />
-            <input type="submit" value="Submit" />
-          </form>
-      }
+        {row}
       </div>
     )
   }
