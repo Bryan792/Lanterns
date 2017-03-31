@@ -2,7 +2,6 @@
 
 import 'babel-polyfill'
 
-import Immutable from 'immutable'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
@@ -13,25 +12,20 @@ import thunkMiddleware from 'redux-thunk'
 import io from 'socket.io-client'
 
 import App from '../shared/app'
-import helloReducer from '../shared/reducer/hello'
 import gameReducer from '../shared/reducer/game'
 import { APP_CONTAINER_SELECTOR } from '../shared/config'
 import { isProd } from '../shared/util'
 
 /* eslint-disable no-underscore-dangle */
 const composeEnhancers = (isProd ? null : window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose
-const preloadedState = window.__PRELOADED_STATE__
 /* eslint-enable no-underscore-dangle */
 
 const socket = io('http://localhost:3000/')
 
 const store = createStore(combineReducers({
-  hello: helloReducer,
   game: gameReducer,
 }),
-  {
-    hello: Immutable.fromJS(preloadedState.hello),
-  },
+  {},
   composeEnhancers(applyMiddleware(thunkMiddleware.withExtraArgument(socket))))
 
 const rootEl = document.querySelector(APP_CONTAINER_SELECTOR)
