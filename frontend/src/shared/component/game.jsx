@@ -110,57 +110,64 @@ class Game extends React.Component {
         <div>
           {gameData.turn === 'NEW_GAME' ?
             <div>
-              {DIR_ARRAY.map(dir => <PlayerSelector handleSubmit={addPlayer} direction={dir} player={gameData.players[dir]} key={dir} shouldShowSubmit={!playerDir} />)}
+              {DIR_ARRAY.map(dir => <PlayerSelector handleSubmit={addPlayer} direction={dir} player={gameData.players[dir]} key={dir} shouldShowSubmit={!playerDir} />,
+        )}
               <Button label="Start Game" handleClick={startGame} />
             </div>
         :
             <div>
-              {playerDir && gameData && gameData.players[playerDir] &&
-              <div>
-                <h2>You are {playerDir}</h2>
-                <Player player={gameData.players[playerDir]} />
-              </div>
-        }
-              <h2>{gameData.turn}</h2>
-              {gameData && <Grid />}
 
 
-              {gameData &&
-              <div
+              {Object.keys(gameData.players).map(dir => <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
+                  border: 2,
+                  borderStyle: 'solid',
+                  borderColor: dir === playerDir ? 'yellow' : 'black',
                 }}
+                key={dir}
               >
-                {
-        Object.keys(gameData.lanterns).sort((color1, color2) => gameData.lanterns[color2] - gameData.lanterns[color1]).map(color => <button
-          style={{
-            ...style,
-            height: 70,
-            width: 40,
-            borderStyle: 'solid',
-            borderColor: color === selectedGridLantern ? 'yellow' : 'black',
-            border: 2,
-            margin: 2,
-          }}
-          onClick={() => {
-            selectGridLantern(color)
-          }}
-          key={color}
-        >
-          <Lantern color={color} count={gameData.lanterns[color]} />
-        </button>,
+                <Player player={gameData.players[dir]} />
+              </div>,
         )}
-              </div>}
 
-              { gameData &&
+              <h2>{gameData.turn}</h2>
+              <Grid />
+
               <div
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
                 }}
               >
-                {
+                {Object.keys(gameData.lanterns).sort((color1, color2) => gameData.lanterns[color2] - gameData.lanterns[color1]).map(color => <button
+                  style={{
+                    ...style,
+                    height: 70,
+                    width: 40,
+                    borderStyle: 'solid',
+                    borderColor: color === selectedGridLantern ? 'yellow' : 'black',
+                    border: 2,
+                    margin: 2,
+                  }}
+                  onClick={() => {
+                    selectGridLantern(color)
+                  }}
+                  key={color}
+                >
+                  <Lantern color={color} count={gameData.lanterns[color]} />
+                </button>,
+        )}
+              </div>
+              {playerDir && playerDir === gameData.turn &&
+              <div>
+                {gameData.turnStep <= 1 &&
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                  }}
+                >
+                  {
         ['uniques', 'threePair', 'fourOfAKind']
           .filter(type => gameData.dedications[type].length > 0,
         )
@@ -168,10 +175,15 @@ class Game extends React.Component {
             {possibleDedications[type].length > 0 &&
             <DedicationSelector onDedicationSelected={buyDedication} type={type} possibleDedications={possibleDedications[type]} />}
           </div>)}
-              </div>}
+                </div>
+        }
 
-              <Button label="Trade Favors" handleClick={tradeFavors} />
-              <Button label="Place Tile" handleClick={placeTile} />
+                {gameData.turnStep === 0 &&
+                <Button label="Trade Favors" handleClick={tradeFavors} />
+        }
+                <Button label="Place Tile" handleClick={placeTile} />
+              </div>
+        }
             </div>
       }
           <p>{JSON.stringify(gameData)}</p>
