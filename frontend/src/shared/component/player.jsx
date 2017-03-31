@@ -60,6 +60,7 @@ const Player = ({ player, selectedHandTileIdx, selectHandTile, selectedHandLante
   )}
   </div>
   <div>{player.favors} favors</div>
+  <div>{player.points} points</div>
 </div>
 
 export default Player

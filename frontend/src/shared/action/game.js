@@ -8,6 +8,7 @@ export const SELECT_HAND_TILE = 'SELECT_HAND_TILE'
 export const SELECT_GRID_COORD = 'SELECT_GRID_COORD'
 export const SELECT_HAND_LANTERN = 'SELECT_HAND_LANTERN'
 export const SELECT_GRID_LANTERN = 'SELECT_GRID_LANTERN'
+export const SELECT_DEDICATION = 'SELECT_DEDICATION'
 
 export const loadGame = createAction(LOAD_GAME)
 export const loadGameAsyncSuccess = createAction(LOAD_GAME_ASYNC_SUCCESS)
@@ -16,6 +17,7 @@ export const selectHandTile = createAction(SELECT_HAND_TILE)
 export const selectGridCoord = createAction(SELECT_GRID_COORD)
 export const selectHandLantern = createAction(SELECT_HAND_LANTERN)
 export const selectGridLantern = createAction(SELECT_GRID_LANTERN)
+export const selectDedication = createAction(SELECT_DEDICATION)
 
 export const loadGameAsync = (gameId: string) => (dispatch: Function, getState: Function, socket) => {
   // Does this belong here or in some other middleware?
@@ -28,7 +30,9 @@ export const loadGameAsync = (gameId: string) => (dispatch: Function, getState: 
 export const addPlayer = (direction: string, name: string) => (dispatch: Function, getState: Function, socket: object) => {
   // Does this belong here or in some other middleware?
   socket.emit('player', `${direction} ${name}`, (result) => {
-    if (result === 'SUCCESS') { dispatch(playerSelected(direction)) }
+    if (result === 'SUCCESS') {
+      dispatch(playerSelected(direction))
+    }
   })
 }
 
@@ -56,5 +60,12 @@ export const tradeFavors = () => (dispatch: Function, getState: Function, socket
   socket.emit('tradeFavors', {
     giveColor: getState().game.get('selectedHandLantern'),
     getColor: getState().game.get('selectedGridLantern'),
+  })
+}
+
+export const buyDedication = (type, lanterns) => (dispatch: Function, getState: Function, socket: object) => {
+  socket.emit('buyDedication', {
+    dedicationType: type,
+    lanterns,
   })
 }

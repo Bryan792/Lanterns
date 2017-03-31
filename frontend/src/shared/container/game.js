@@ -8,6 +8,8 @@ import {
   placeTile,
   selectGridLantern,
   tradeFavors,
+  selectDedication,
+  buyDedication,
 } from '../action/game'
 import Game from '../component/game'
 
@@ -16,6 +18,7 @@ const mapStateToProps = state => ({
   playerDir: state.game.get('playerDir'),
   selectedHandTile: state.game.get('selectedHandTile'),
   selectedGridLantern: state.game.get('selectedGridLantern'),
+  selectedDedication: state.game.get('selectedDedication'),
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -25,6 +28,8 @@ const mapDispatchToProps = dispatch => ({
   placeTile: () => { dispatch(placeTile()) },
   selectGridLantern: (color: string) => { dispatch(selectGridLantern(color)) },
   tradeFavors: () => { dispatch(tradeFavors()) },
+  selectDedication: (type: string) => { dispatch(selectDedication(type)) },
+  buyDedication: (type, lanterns) => { dispatch(buyDedication(type, lanterns)) },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game)

@@ -10,6 +10,7 @@ import {
   SELECT_GRID_COORD,
   SELECT_HAND_LANTERN,
   SELECT_GRID_LANTERN,
+  SELECT_DEDICATION,
 } from '../action/game'
 
 const initialState = Immutable.fromJS({
@@ -33,6 +34,8 @@ const gameReducer = (state: Immut = initialState, action: { type: string, payloa
       return state.set('selectedHandLantern', action.payload)
     case SELECT_GRID_LANTERN:
       return state.set('selectedGridLantern', action.payload)
+    case SELECT_DEDICATION:
+      return state.set('selectedDedication', action.payload)
     default:
       return state
   }

@@ -51,6 +51,13 @@ io.on('connection', function(socket) {
     games[gameId].tradeFavors(playerDir, giveColor, getColor);
     io.to(gameId).emit('gameData', games[gameId].getPlayerData());
   });
+
+  socket.on('buyDedication', ({dedicationType, lanterns}) => {
+    console.log(`dedication`);
+    games[gameId].buyDedication(playerDir, dedicationType, lanterns);
+    io.to(gameId).emit('gameData', games[gameId].getPlayerData());
+  });
+
 });
 
 io.listen(3000);
