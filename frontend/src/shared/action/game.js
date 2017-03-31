@@ -66,6 +66,6 @@ export const tradeFavors = () => (dispatch: Function, getState: Function, socket
 export const buyDedication = (type, lanterns) => (dispatch: Function, getState: Function, socket: object) => {
   socket.emit('buyDedication', {
     dedicationType: type,
-    lanterns,
+    lanterns: lanterns,
   })
 }
