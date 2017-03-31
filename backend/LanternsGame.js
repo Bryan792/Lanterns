@@ -188,7 +188,7 @@ function LanternsGame(players) {
     }
 
     //give lanterns for main card
-    for (let dir of DIR_ARRAY) {
+    for (let dir in game.players) {
       giveLantern(dir, currentTile[dir]);
     }
 
@@ -207,7 +207,8 @@ function LanternsGame(players) {
   }
 
   function progressTurn() {
-    game.turn = DIR_ARRAY[(DIR_ARRAY.indexOf(game.turn) + 1) % DIR_ARRAY.length];
+    let playerDirections = _.intersection(DIR_ARRAY, Object.keys(game.players));
+    game.turn = playerDirections[(playerDirections.indexOf(game.turn) + 1) % playerDirections.length];
     game.turnStep = 0;
     console.log('It is now ' + game.players[game.turn].name + ' turn');
   }
