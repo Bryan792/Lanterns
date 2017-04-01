@@ -3,7 +3,7 @@ import React from 'react'
 import { withRouter } from 'react-router'
 import Combinatorics from 'js-combinatorics'
 
-import PlayerSelector from './player-selector'
+import Lobby from '../container/lobby'
 import Button from './button'
 import Player from '../container/player'
 import Grid from '../container/grid'
@@ -39,8 +39,6 @@ class Game extends React.Component {
   playerDir: string,
   gameData: object,
   loadGame: Function,
-  addPlayer: Function,
-  startGame: Function,
   placeTile: Function,
   selectedGridLantern: ?string,
   selectGridLantern: Function,
@@ -63,8 +61,6 @@ class Game extends React.Component {
     const {
  playerDir,
  gameData,
- addPlayer,
- startGame,
  placeTile,
  selectedGridLantern,
  selectGridLantern,
@@ -120,11 +116,7 @@ class Game extends React.Component {
         {gameData &&
         <div>
           {gameData.turn === 'NEW_GAME' ?
-            <div>
-              {DIR_ARRAY.map(dir => <PlayerSelector handleSubmit={addPlayer} direction={dir} player={gameData.players[dir]} key={dir} shouldShowSubmit={!playerDir} />,
-        )}
-              <Button label="Start Game" handleClick={startGame} />
-            </div>
+            <Lobby />
         :
             <div>
 
