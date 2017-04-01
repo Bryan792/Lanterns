@@ -7,7 +7,12 @@ import { APP_NAME } from '../../config'
 import SearchBar from '../searchbar'
 
 const HomePage = () =>
-  <div>
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+    }}
+  >
     <Helmet
       meta={[
         { name: 'description', content: 'Lanterns' },
