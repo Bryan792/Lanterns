@@ -20,7 +20,7 @@ import { isProd } from '../shared/util'
 const composeEnhancers = (isProd ? null : window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose
 /* eslint-enable no-underscore-dangle */
 
-const socket = io('http://localhost:3000/')
+const socket = io(`${isProd ? 'http://yura.bryanching.net' : 'http://localhost'}:3000/`)
 
 const store = createStore(combineReducers({
   game: gameReducer,
