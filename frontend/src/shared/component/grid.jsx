@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Tile from './tile'
+import Rotater from './rotater'
 
 class Grid extends React.Component {
 
@@ -9,10 +10,12 @@ class Grid extends React.Component {
   selectedHandTile: ?{},
   selectedGridCoord: ?{},
   selectGridCoord: Function,
+  handRotations: {},
+  rotateHandTile: Function,
   }
 
   render() {
-    const { grid, selectedHandTile, selectedGridCoord, selectGridCoord } = this.props
+    const { grid, selectedHandTile, selectedGridCoord, selectGridCoord, handRotations, rotateHandTile } = this.props
     // inefficient?
     const minX = grid.map(tile => tile.x).reduce((a, b) => Math.min(a, b)) - 1
     const maxX = grid.map(tile => tile.x).reduce((a, b) => Math.max(a, b)) + 1
@@ -40,7 +43,7 @@ class Grid extends React.Component {
         const tileMatched = grid.some((tile) => {
           if (tile.x === x) {
             if (tile.y === y) {
-              row.push(<div style={style} key={`${x} ${y}`}><Tile tile={tile} size={50} /></div>)
+              row.push(<div style={style} key={`${x} ${y}`}><Tile tile={tile} size={50} numRotations={0} /></div>)
               return true
             }
             if (!adjacent) {
@@ -67,12 +70,16 @@ class Grid extends React.Component {
                   ...style,
                   backgroundColor: 'yellow',
                 }} key={`${x} ${y}`}
-              ><Tile tile={selectedHandTile} size={50} /></div>)
+              ><Rotater size={50} handleRotate={() => rotateHandTile(selectedHandTile.tileIdx)}>
+                <Tile tile={selectedHandTile} size={50} numRotations={handRotations.get(selectedHandTile.tileIdx) || 0} />
+              </Rotater>
+              </div>)
             } else {
               row.push(<button
                 style={{
                   ...style,
-                  backgroundColor: 'grey',
+                  borderStyle: 'dashed',
+                  border: 2,
                 }} size={50} key={`${x} ${y}`} onClick={() => {
                   selectGridCoord(x, y)
                 }}

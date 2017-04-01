@@ -115,7 +115,7 @@ function LanternsGame(players) {
     let arr = range(1, 36);
   }
 
-  function placeTile(playerDir, tileIdx, x, y) {
+  function placeTile(playerDir, tileIdx, x, y, numRotations) {
     let player = game.players[playerDir];
     //Correct player?
     if (playerDir !== game.turn) {
@@ -137,6 +137,13 @@ function LanternsGame(players) {
       console.log('Tile not in hand');
       return;
     }
+
+    //check if numRotations is valid [0,3]
+    if (!(numRotations >= 0) || !(numRotations <= 3)) {
+      console.log('Rotations not between 0 and 3');
+      return;
+    }
+
     //check if position is valid
     let adjacent = {};
     let valid = true;
@@ -163,6 +170,16 @@ function LanternsGame(players) {
     if (valid === false || adjacent.length === 0) {
       console.log('Invalid');
       return;
+    }
+
+    //valid placement, lets rotate the tile permanently
+    if (numRotations > 0) {
+      let newTile = Object.assign({}, currentTile);
+      for (let i = 0; i < DIR_ARRAY.length; i+=1) {
+        newTile[DIR_ARRAY[i]] = currentTile[DIR_ARRAY[(i + (DIR_ARRAY.length - numRotations)) % DIR_ARRAY.length]];
+      }
+      currentTile = newTile;
+      game.tiles[tileIdx] =  newTile;
     }
 
     //check if matched, if so payout

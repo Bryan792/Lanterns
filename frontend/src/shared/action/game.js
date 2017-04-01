@@ -5,6 +5,7 @@ export const LOAD_GAME = 'LOAD_GAME'
 export const LOAD_GAME_ASYNC_SUCCESS = 'LOAD_GAME_ASYNC_SUCCESS'
 export const PLAYER_SELECTED = 'PLAYER_SELECTED'
 export const SELECT_HAND_TILE = 'SELECT_HAND_TILE'
+export const ROTATE_HAND_TILE = 'ROTATE_HAND_TILE'
 export const SELECT_GRID_COORD = 'SELECT_GRID_COORD'
 export const SELECT_HAND_LANTERN = 'SELECT_HAND_LANTERN'
 export const SELECT_GRID_LANTERN = 'SELECT_GRID_LANTERN'
@@ -14,6 +15,7 @@ export const loadGame = createAction(LOAD_GAME)
 export const loadGameAsyncSuccess = createAction(LOAD_GAME_ASYNC_SUCCESS)
 export const playerSelected = createAction(PLAYER_SELECTED)
 export const selectHandTile = createAction(SELECT_HAND_TILE)
+export const rotateHandTile = createAction(ROTATE_HAND_TILE)
 export const selectGridCoord = createAction(SELECT_GRID_COORD)
 export const selectHandLantern = createAction(SELECT_HAND_LANTERN)
 export const selectGridLantern = createAction(SELECT_GRID_LANTERN)
@@ -51,6 +53,7 @@ export const placeTile = () => (dispatch: Function, getState: Function, socket: 
       tileIdx: selectedHandTileIdx,
       x: selectedGridCoord.x,
       y: selectedGridCoord.y,
+      numRotations: state.game.getIn(['handRotations', selectedHandTileIdx]) || 0,
     })
   }
 }
@@ -66,6 +69,6 @@ export const tradeFavors = () => (dispatch: Function, getState: Function, socket
 export const buyDedication = (type, lanterns) => (dispatch: Function, getState: Function, socket: object) => {
   socket.emit('buyDedication', {
     dedicationType: type,
-    lanterns: lanterns,
+    lanterns,
   })
 }

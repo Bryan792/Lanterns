@@ -40,19 +40,22 @@ io.on('connection', function(socket) {
     io.to(gameId).emit('gameData', games[gameId].getPlayerData());
   });
 
-  socket.on('placeTile', ({tileIdx, x, y,}) => {
-    console.log(`${tileIdx} at ${x} ${y}`)
-    games[gameId].placeTile(playerDir, tileIdx, x, y);
+  socket.on('placeTile', ({tileIdx, x, y, numRotations}) => {
+    console.log(playerDir);
+    console.log(`${tileIdx} at ${x} ${y} with ${numRotations} cw rotations`)
+    games[gameId].placeTile(playerDir, tileIdx, x, y, numRotations);
     io.to(gameId).emit('gameData', games[gameId].getPlayerData());
   });
 
   socket.on('tradeFavors', ({giveColor, getColor}) => {
+    console.log(playerDir);
     console.log(`${giveColor} for ${getColor}`);
     games[gameId].tradeFavors(playerDir, giveColor, getColor);
     io.to(gameId).emit('gameData', games[gameId].getPlayerData());
   });
 
   socket.on('buyDedication', ({dedicationType, lanterns}) => {
+    console.log(playerDir);
     console.log(`dedication`);
     games[gameId].buyDedication(playerDir, dedicationType, lanterns);
     io.to(gameId).emit('gameData', games[gameId].getPlayerData());

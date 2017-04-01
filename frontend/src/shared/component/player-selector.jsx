@@ -19,7 +19,7 @@ class PlayerSelector extends React.Component {
     handleSubmit: Function,
     player: ?{name: string},
     direction: string,
-    shouldShowSubmit: Function,
+    shouldShowSubmit: boolean,
   }
 
   handleNameChange(event: Event) {

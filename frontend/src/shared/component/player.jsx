@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Tile from './tile'
+import Rotater from './rotater'
 import Lantern from './lantern'
 
 type Props = {
@@ -10,6 +11,8 @@ selectedHandTileIdx: number,
 selectedHandLantern: ?string,
 selectHandTile: Function,
 selectHandLantern: Function,
+handRotations: {},
+rotateHandTile: Function,
 }
 
 const style = {
@@ -22,7 +25,7 @@ const style = {
 }
 
 // TODO: button here? check keys
-const Player = ({ player, selectedHandTileIdx, selectHandTile, selectedHandLantern, selectHandLantern }: Props) => <div>
+const Player = ({ player, selectedHandTileIdx, selectHandTile, selectedHandLantern, selectHandLantern, rotateHandTile, handRotations }: Props) => <div>
   <h3>{player.name}</h3>
   {player.hand.map((tile, index) => <button
     style={{
@@ -34,7 +37,11 @@ const Player = ({ player, selectedHandTileIdx, selectHandTile, selectedHandLante
       selectHandTile(index)
     }}
     key={tile.tileIdx}
-  ><Tile tile={tile} size={100} /></button>,
+  ><Rotater
+    size={100} handleRotate={() => {
+      rotateHandTile(tile.tileIdx)
+    }}
+  ><Tile tile={tile} size={100} numRotations={handRotations.get(tile.tileIdx) || 0} /></Rotater></button>,
   )}
   <div
     style={{
@@ -52,7 +59,9 @@ const Player = ({ player, selectedHandTileIdx, selectHandTile, selectedHandLante
       borderColor: color === selectedHandLantern ? 'yellow' : 'black',
       border: 2,
     }}
-    onClick={() => { selectHandLantern(color) }}
+    onClick={() => {
+      selectHandLantern(color)
+    }}
     key={color}
   >
     <Lantern color={color} count={player.lanterns[color]} />
