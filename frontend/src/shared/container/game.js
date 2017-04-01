@@ -10,6 +10,7 @@ import {
   tradeFavors,
   selectDedication,
   buyDedication,
+  discardLanterns,
 } from '../action/game'
 import Game from '../component/game'
 
@@ -30,6 +31,7 @@ const mapDispatchToProps = dispatch => ({
   tradeFavors: () => { dispatch(tradeFavors()) },
   selectDedication: (type: string) => { dispatch(selectDedication(type)) },
   buyDedication: (type, lanterns) => { dispatch(buyDedication(type, lanterns)) },
+  discardLanterns: (lanterns) => { dispatch(discardLanterns(lanterns)) },
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game)

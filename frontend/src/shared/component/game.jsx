@@ -10,6 +10,7 @@ import Grid from '../container/grid'
 import Lantern from './lantern'
 import Dedication from './dedication'
 import DedicationSelector from './dedication-selector'
+import DiscardSelector from './discard-selector'
 
 const COLOR_ORANGE = 'Orange'
 const COLOR_GREEN = 'Green'
@@ -44,9 +45,8 @@ class Game extends React.Component {
   selectedGridLantern: ?string,
   selectGridLantern: Function,
   tradeFavors: Function,
-  selectDedication: Function,
-  selectedDedication: ?string,
   buyDedication: Function,
+  discardLanterns: Function,
   }
 
   render() {
@@ -60,7 +60,18 @@ class Game extends React.Component {
     }
 
     // eslint-disable-next-line no-unused-vars
-    const { gameId, playerDir, gameData, loadGame, addPlayer, startGame, placeTile, selectedGridLantern, selectGridLantern, tradeFavors, selectDedication, selectedDedication, buyDedication } = this.props
+    const {
+ playerDir,
+ gameData,
+ addPlayer,
+ startGame,
+ placeTile,
+ selectedGridLantern,
+ selectGridLantern,
+ tradeFavors,
+ buyDedication,
+ discardLanterns,
+ } = this.props
 
     const possibleDedications = {
       uniques: [],
@@ -181,6 +192,10 @@ class Game extends React.Component {
                 {gameData.turnStep === 0 &&
                 <Button label="Trade Favors" handleClick={tradeFavors} />
         }
+
+                <DiscardSelector lanterns={gameData.players[playerDir].lanterns} handleDiscard={discardLanterns} />
+
+
                 <Button label="Place Tile" handleClick={placeTile} />
               </div>
         }

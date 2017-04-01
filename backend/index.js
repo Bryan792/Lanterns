@@ -61,6 +61,12 @@ io.on('connection', function(socket) {
     io.to(gameId).emit('gameData', games[gameId].getPlayerData());
   });
 
+  socket.on('discardLanterns', (lanterns) => {
+    console.log(playerDir);
+    console.log(`discarding`);
+    games[gameId].discardLanterns(playerDir, lanterns);
+    io.to(gameId).emit('gameData', games[gameId].getPlayerData());
+  });
 });
 
 io.listen(3000);

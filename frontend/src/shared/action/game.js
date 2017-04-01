@@ -72,3 +72,7 @@ export const buyDedication = (type, lanterns) => (dispatch: Function, getState: 
     lanterns,
   })
 }
+
+export const discardLanterns = lanterns => (dispatch: Function, getState: Function, socket: object) => {
+  socket.emit('discardLanterns', lanterns)
+}

@@ -50,6 +50,7 @@ function LanternsGame(players) {
     placeTile: placeTile,
     tradeFavors: tradeFavors,
     buyDedication: buyDedication,
+    discardLanterns: discardLanterns,
     printGrid: printGrid,
     getPlayerData: getPlayerData,
     addPlayer: addPlayer,
@@ -366,6 +367,26 @@ function LanternsGame(players) {
   }
 
   function discardLanterns(playerDir, lanterns) {
+    console.log(JSON.stringify(lanterns));
+    let player = game.players[playerDir];
+    //validate
+    //Correct player?
+    if (playerDir !== game.turn) {
+      console.log('Wrong player');
+      return;
+    }
+    //player has specified lanterns?
+    for (let color in lanterns) {
+      if (lanterns[color] > player.lanterns[color]) {
+        console.log('you do not have enough lanterns');
+        return
+      }
+    }
+
+    for (let color in lanterns) {
+      game.lanterns[color] += lanterns[color];
+      player.lanterns[color] -= lanterns[color];
+    }
   }
 
   function generatePlayer(name) {
