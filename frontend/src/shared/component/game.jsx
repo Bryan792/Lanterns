@@ -201,7 +201,6 @@ class Game extends React.Component {
         }
             </div>
       }
-          <p>{JSON.stringify(gameData)}</p>
         </div>
       }
       </div>
