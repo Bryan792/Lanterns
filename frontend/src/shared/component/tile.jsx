@@ -21,6 +21,9 @@ const Tile = ({ tile, numRotations, size }: Props) => {
   }
 
   const style = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     boxSizing: 'border-box',
     height: '100%',
     width: '100%',
