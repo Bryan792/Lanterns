@@ -14,7 +14,6 @@ const HomePage = () =>
         { property: 'og:title', content: APP_NAME },
       ]}
     />
-    <h1>{APP_NAME}</h1>
     <SearchBar />
   </div>
 
