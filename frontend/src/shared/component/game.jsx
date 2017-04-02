@@ -4,13 +4,11 @@ import { withRouter } from 'react-router'
 import Combinatorics from 'js-combinatorics'
 
 import Lobby from '../container/lobby'
-import Button from './button'
 import Player from '../container/player'
 import Grid from '../container/grid'
 import Lantern from './lantern'
 import Dedication from './dedication'
-import DedicationSelector from './dedication-selector'
-import DiscardSelector from './discard-selector'
+import PlayArea from '../container/play-area'
 
 const COLOR_ORANGE = 'Orange'
 const COLOR_GREEN = 'Green'
@@ -39,12 +37,8 @@ class Game extends React.Component {
   playerDir: string,
   gameData: object,
   loadGame: Function,
-  placeTile: Function,
   selectedGridLantern: ?string,
   selectGridLantern: Function,
-  tradeFavors: Function,
-  buyDedication: Function,
-  discardLanterns: Function,
   }
 
   render() {
@@ -57,17 +51,7 @@ class Game extends React.Component {
       MozAppearance: 'none',
     }
 
-    // eslint-disable-next-line no-unused-vars
-    const {
- playerDir,
- gameData,
- placeTile,
- selectedGridLantern,
- selectGridLantern,
- tradeFavors,
- buyDedication,
- discardLanterns,
- } = this.props
+    const { playerDir, gameData, selectedGridLantern, selectGridLantern } = this.props
 
     const possibleDedications = {
       uniques: [],
@@ -111,84 +95,116 @@ class Game extends React.Component {
       })
     }
 
+    const styles = {
+      [DIR_NORTH]: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+      },
+      [DIR_EAST]: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+      },
+      [DIR_SOUTH]: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+      },
+      [DIR_WEST]: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+      },
+    }
+
     return (
       <div>
         {gameData &&
         <div>
           {gameData.turn === 'NEW_GAME' ?
             <Lobby />
-        :
-            <div>
+          :
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
 
-
-              {Object.keys(gameData.players).map(dir => <div
-                style={{
-                  border: 2,
-                  borderStyle: 'solid',
-                  borderColor: dir === playerDir ? 'yellow' : 'black',
-                }}
-                key={dir}
-              >
-                <Player player={gameData.players[dir]} />
-              </div>,
+              {Object.keys(gameData.players).map(dir =>
+                <div
+                  style={{
+                    ...styles[dir],
+                    border: 2,
+                    borderStyle: 'solid',
+                    borderColor: dir === playerDir ? 'yellow' : 'black',
+                  }}
+                  key={dir}
+                >
+                  <Player player={gameData.players[dir]} />
+                </div>,
         )}
 
               <h2>{gameData.turn}</h2>
-              <Grid />
-
               <div
                 style={{
                   display: 'flex',
-                  flexDirection: 'row',
+                  justifyContent: 'space-between',
                 }}
               >
-                {Object.keys(gameData.lanterns).sort((color1, color2) => gameData.lanterns[color2] - gameData.lanterns[color1]).map(color => <button
-                  style={{
-                    ...style,
-                    height: 70,
-                    width: 40,
-                    borderStyle: 'solid',
-                    borderColor: color === selectedGridLantern ? 'yellow' : 'black',
-                    border: 2,
-                    margin: 2,
-                  }}
-                  onClick={() => {
-                    selectGridLantern(color)
-                  }}
-                  key={color}
-                >
-                  <Lantern color={color} count={gameData.lanterns[color]} />
-                </button>,
-        )}
-              </div>
-              {playerDir && playerDir === gameData.turn &&
-              <div>
-                {gameData.turnStep <= 1 &&
+
                 <div
                   style={{
                     display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                   }}
                 >
+                  {Object.keys(gameData.lanterns).sort((color1, color2) => gameData.lanterns[color2] - gameData.lanterns[color1]).map(color => <button
+                    style={{
+                      ...style,
+                      height: 40,
+                      width: 70,
+                      borderStyle: 'solid',
+                      borderColor: color === selectedGridLantern ? 'yellow' : 'black',
+                      border: 2,
+                      margin: 2,
+                    }}
+                    onClick={() => {
+                      selectGridLantern(color)
+                    }}
+                    key={color}
+                  >
+                    <Lantern color={color} count={gameData.lanterns[color]} />
+                  </button>,
+        )}
+                </div>
+                <Grid />
+
+                <div>
                   {
         ['uniques', 'threePair', 'fourOfAKind']
           .filter(type => gameData.dedications[type].length > 0,
         )
-          .map(type => <div key={type}><Dedication points={gameData.dedications[type][0]} type={type} />
-            {possibleDedications[type].length > 0 &&
-            <DedicationSelector onDedicationSelected={buyDedication} type={type} possibleDedications={possibleDedications[type]} />}
+        .map(type =>
+          <div key={type}>
+            <Dedication points={gameData.dedications[type][0]} type={type} />
           </div>)}
                 </div>
-        }
 
-                {gameData.turnStep === 0 &&
-                <Button label="Trade Favors" handleClick={tradeFavors} />
-        }
-
-                <DiscardSelector lanterns={gameData.players[playerDir].lanterns} handleDiscard={discardLanterns} />
+              </div>
 
 
-                <Button label="Place Tile" handleClick={placeTile} />
+              {playerDir && playerDir === gameData.turn &&
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  alignSelf: 'center',
+                }}
+              >
+                <PlayArea player={gameData.players[playerDir]} />
+
               </div>
         }
             </div>

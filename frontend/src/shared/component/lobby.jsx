@@ -17,22 +17,22 @@ type Props = {
 
 const styles = {
   [DIR_NORTH]: {
-    position: 'fixed',
+    position: 'absolute',
     top: 0,
     left: 0,
   },
   [DIR_EAST]: {
-    position: 'fixed',
+    position: 'absolute',
     top: 0,
     right: 0,
   },
   [DIR_SOUTH]: {
-    position: 'fixed',
+    position: 'absolute',
     bottom: 0,
     right: 0,
   },
   [DIR_WEST]: {
-    position: 'fixed',
+    position: 'absolute',
     bottom: 0,
     left: 0,
   },

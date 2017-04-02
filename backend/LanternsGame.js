@@ -46,7 +46,7 @@ function LanternsGame(players) {
       fours: [4, 4, 4],
     },
     turn: 'NEW_GAME',
-    turnStep: 0,
+    turnStep: -1,
     placeTile: placeTile,
     tradeFavors: tradeFavors,
     buyDedication: buyDedication,
@@ -55,6 +55,7 @@ function LanternsGame(players) {
     getPlayerData: getPlayerData,
     addPlayer: addPlayer,
     startGame: startGame,
+    skipTurnStep,
   }
   return game;
 
@@ -75,6 +76,52 @@ function LanternsGame(players) {
 
     //TODO: random
     game.turn = DIR_NORTH;
+    game.turnStep = 3;
+  }
+
+  function skipTurnStep(playerDir) {
+    let player = game.players[playerDir];
+    //Correct player?
+    if (playerDir !== game.turn) {
+      console.log('Wrong player');
+      return;
+    }
+    if (game.turnStep < 2) {
+      progressTurnStep(player)
+    }
+  }
+
+  //TODO Rename and can be totally refactored
+  function progressTurnStep(player) {
+    game.turnStep += 1;
+    let handCount = Object.keys(player.lanterns).reduce((previous, color) => previous + player.lanterns[color], 0);
+    switch (game.turnStep) {
+      case 0: {
+        if (player.favors < 2) {
+          progressTurnStep(player);
+        }
+        break;
+      }
+      case 1: {
+        if (handCount <= 3) {
+          progressTurnStep(player);
+        }
+        break;
+      }
+      case 2: {
+        if (handCount <= 12) {
+          progressTurnStep(player);
+        }
+        break;
+      }
+      case 3:
+        break;
+      default: {
+        console.log(`ERROR: TurnStep weird number: ${game.turnStep}`);
+        break;
+      }
+    }
+
   }
 
   function getRandColor() {
@@ -121,6 +168,11 @@ function LanternsGame(players) {
     //Correct player?
     if (playerDir !== game.turn) {
       console.log('Wrong player');
+      return;
+    }
+    //Correct turn?
+    if (game.turnStep !== 3) {
+      console.log('Player played this out of order');
       return;
     }
     //If player has more than 12 lanterns, he must discard to 12 first
@@ -227,7 +279,8 @@ function LanternsGame(players) {
   function progressTurn() {
     let playerDirections = _.intersection(DIR_ARRAY, Object.keys(game.players));
     game.turn = playerDirections[(playerDirections.indexOf(game.turn) + 1) % playerDirections.length];
-    game.turnStep = 0;
+    game.turnStep = -1;
+    progressTurnStep(game.players[game.turn])
     console.log('It is now ' + game.players[game.turn].name + ' turn');
   }
 
@@ -256,7 +309,7 @@ function LanternsGame(players) {
       return;
     }
     //Correct turn?
-    if (game.turnStep > 0) {
+    if (game.turnStep !== 0) {
       console.log('Player played this out of order');
       return;
     }
@@ -282,7 +335,7 @@ function LanternsGame(players) {
     game.favors += 2;
     game.lanterns[giveColor]++;
     game.lanterns[getColor]--;
-    game.turnStep = 1;
+    progressTurnStep(player)
     console.log(player.name + ' traded a ' + giveColor + ' for a ' + getColor);
   }
 
@@ -295,7 +348,7 @@ function LanternsGame(players) {
       return;
     }
     //Correct turn?
-    if (game.turnStep > 1) {
+    if (game.turnStep !== 1) {
       console.log('Player played this out of order');
       return;
     }
@@ -363,7 +416,7 @@ function LanternsGame(players) {
       player.lanterns[color] -= count;
       game.lanterns[color] += count;
     }
-    game.turnStep = 2;
+    progressTurnStep(player)
   }
 
   function discardLanterns(playerDir, lanterns) {
@@ -373,6 +426,11 @@ function LanternsGame(players) {
     //Correct player?
     if (playerDir !== game.turn) {
       console.log('Wrong player');
+      return;
+    }
+    //Correct turn?
+    if (game.turnStep !== 2) {
+      console.log('Player played this out of order');
       return;
     }
     //player has specified lanterns?
@@ -387,6 +445,7 @@ function LanternsGame(players) {
       game.lanterns[color] += lanterns[color];
       player.lanterns[color] -= lanterns[color];
     }
+    progressTurnStep(player);
   }
 
   function generatePlayer(name) {

@@ -67,6 +67,14 @@ io.on('connection', function(socket) {
     games[gameId].discardLanterns(playerDir, lanterns);
     io.to(gameId).emit('gameData', games[gameId].getPlayerData());
   });
+
+  socket.on('skipTurnStep', () => {
+    console.log(playerDir);
+    console.log(`skipping`);
+    games[gameId].skipTurnStep(playerDir);
+    io.to(gameId).emit('gameData', games[gameId].getPlayerData());
+  });
+
 });
 
 io.listen(3000);

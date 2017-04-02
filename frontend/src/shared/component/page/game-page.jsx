@@ -6,14 +6,23 @@ import Helmet from 'react-helmet'
 import Game from '../../container/game'
 
 const GamePage = (props: {match: {params: {gameId: string}}}) =>
-  <div>
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+    }}
+  >
     <Helmet
       meta={[
         { name: 'description', content: `Lanterns: ${props.match.params.gameId}` },
         { property: 'og:title', content: `Lanterns: ${props.match.params.gameId}` },
       ]}
     />
-    <h1>Game Page {props.match.params.gameId}</h1>
+    <h2
+      style={{
+        alignSelf: 'center',
+      }}
+    >{props.match.params.gameId}</h2>
     <Game gameId={props.match.params.gameId} />
   </div>
 

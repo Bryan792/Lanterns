@@ -1,18 +1,13 @@
 import React from 'react'
 
-import Tile from './tile'
-import Rotater from './rotater'
 import Lantern from './lantern'
 
 type Props = {
 player: {
 },
-selectedHandTileIdx: number,
 selectedHandLantern: ?string,
-selectHandTile: Function,
 selectHandLantern: Function,
 handRotations: {},
-rotateHandTile: Function,
 }
 
 const style = {
@@ -25,36 +20,22 @@ const style = {
 }
 
 // TODO: button here? check keys
-const Player = ({ player, selectedHandTileIdx, selectHandTile, selectedHandLantern, selectHandLantern, rotateHandTile, handRotations }: Props) => <div>
-  <h3>{player.name}</h3>
-  {player.hand.map((tile, index) => <button
-    style={{
-      ...style,
-      height: 100,
-      width: 100,
-      backgroundColor: selectedHandTileIdx === index ? 'yellow' : 'grey',
-    }} onClick={() => {
-      selectHandTile(index)
-    }}
-    key={tile.tileIdx}
-  ><Rotater
-    size={100} handleRotate={() => {
-      rotateHandTile(tile.tileIdx)
-    }}
-  ><Tile tile={tile} size={100} numRotations={handRotations.get(tile.tileIdx) || 0} /></Rotater></button>,
-  )}
-  <div
-    style={{
-      display: 'flex',
-      flexDirection: 'row',
-    }}
-  >
-    {
+const Player = ({ player, selectedHandLantern, selectHandLantern }: Props) =>
+  <div>
+    <h3>{player.name}</h3>
+
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+      }}
+    >
+      {
   Object.keys(player.lanterns).sort((color1, color2) => player.lanterns[color2] - player.lanterns[color1]).map(color => <button
     style={{
       ...style,
-      height: 70,
-      width: 40,
+      height: 50,
+      width: 30,
       borderStyle: 'solid',
       borderColor: color === selectedHandLantern ? 'yellow' : 'black',
       border: 2,
@@ -67,9 +48,9 @@ const Player = ({ player, selectedHandTileIdx, selectHandTile, selectedHandLante
     <Lantern color={color} count={player.lanterns[color]} />
   </button>,
   )}
+    </div>
+    <div>{player.favors} favors</div>
+    <div>{player.points} points</div>
   </div>
-  <div>{player.favors} favors</div>
-  <div>{player.points} points</div>
-</div>
 
 export default Player

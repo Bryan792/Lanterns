@@ -35,6 +35,7 @@ class Grid extends React.Component {
       width: 50,
     }
 
+    // TODO evaluate changing to all relative positions
     const column = []
     for (let x = minX; x <= maxX; x += 1) {
       const row = []
@@ -102,6 +103,9 @@ class Grid extends React.Component {
       <div
         style={{
           display: 'flex',
+          justifyContent: 'center',
+          transform: 'rotate(-45deg)',
+          overflow: 'hidden',
         }}
       >
         {column}
