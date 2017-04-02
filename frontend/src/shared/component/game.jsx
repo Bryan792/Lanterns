@@ -1,7 +1,6 @@
 // TODO: Flow annotate props?
 import React from 'react'
 import { withRouter } from 'react-router'
-import Combinatorics from 'js-combinatorics'
 
 import Lobby from '../container/lobby'
 import Player from '../container/player'
@@ -53,47 +52,6 @@ class Game extends React.Component {
 
     const { playerDir, gameData, selectedGridLantern, selectGridLantern } = this.props
 
-    const possibleDedications = {
-      uniques: [],
-      threePair: [],
-      fourOfAKind: [],
-    }
-
-    if (gameData && playerDir && gameData.players[playerDir]) {
-      const lanterns = gameData.players[playerDir].lanterns
-      if (Object.keys(lanterns).every(color => lanterns[color] >= 1)) {
-        possibleDedications.uniques.push({
-          [COLOR_ORANGE]: 1,
-          [COLOR_GREEN]: 1,
-          [COLOR_PURPLE]: 1,
-          [COLOR_WHITE]: 1,
-          [COLOR_BLUE]: 1,
-          [COLOR_RED]: 1,
-          [COLOR_BLACK]: 1,
-        })
-      }
-
-      // TODO Explain
-      const threePairColors = Object.keys(lanterns).filter(color => lanterns[color] >= 2)
-      if (threePairColors.length >= 3) {
-        possibleDedications.threePair = Combinatorics.combination(
-          threePairColors
-            .map(color => ({
-              [color]: 2,
-            })), 3)
-          .toArray()
-          .map(arrayOfArrays => arrayOfArrays.reduce((acc, lantern) => ({
-            ...acc, ...lantern,
-          }), {}))
-      }
-
-      const fourSameColors = Object.keys(lanterns).filter(color => lanterns[color] >= 4)
-      fourSameColors.forEach((color) => {
-        possibleDedications.fourOfAKind.push({
-          [color]: 4,
-        })
-      })
-    }
 
     const styles = {
       [DIR_NORTH]: {

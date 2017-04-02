@@ -5,6 +5,7 @@ import Rotater from './rotater'
 import Button from './button'
 import DiscardSelector from './discard-selector'
 import TradeFavors from '../container/trade-favors'
+import DedicationSelector from '../container/dedication-selector'
 
 type Props = {
   player: {
@@ -15,11 +16,10 @@ type Props = {
   rotateHandTile: Function,
   discardLanterns: Function,
   placeTile: Function,
-  skipTurnStep: Function,
   gameData: {},
 }
 
-const PlayArea = ({ player, selectedHandTileIdx, selectHandTile, rotateHandTile, handRotations, gameData, discardLanterns, placeTile, skipTurnStep }: Props) => {
+const PlayArea = ({ player, selectedHandTileIdx, selectHandTile, rotateHandTile, handRotations, gameData, discardLanterns, placeTile }: Props) => {
   // eslint-disable-next-line no-unused-vars
   const lanternsCount = Object.keys(player.lanterns).reduce((previous, color) => previous + player.lanterns[color], 0)
 
@@ -85,10 +85,7 @@ const PlayArea = ({ player, selectedHandTileIdx, selectHandTile, rotateHandTile,
                 </div>
                 */}
       {gameData.turnStep === 1 &&
-      <div>
-        <div>dedications</div>
-        <Button label="Skip" handleClick={skipTurnStep} />
-      </div>
+        <DedicationSelector />
     }
 
       {gameData.turnStep === 2 &&
