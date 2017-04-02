@@ -2,7 +2,8 @@
   "presets": [
     "env",
     "flow",
-    "react"
+    "react",
+    "airbnb"
   ],
   "plugins": [
     "transform-object-rest-spread",

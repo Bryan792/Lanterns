@@ -4,6 +4,7 @@ import Tile from './tile'
 import Rotater from './rotater'
 import Button from './button'
 import DiscardSelector from './discard-selector'
+import TradeFavors from '../container/trade-favors'
 
 type Props = {
   player: {
@@ -12,14 +13,13 @@ type Props = {
   selectHandTile: Function,
   handRotations: {},
   rotateHandTile: Function,
-  tradeFavors: Function,
   discardLanterns: Function,
   placeTile: Function,
   skipTurnStep: Function,
   gameData: {},
 }
 
-const PlayArea = ({ player, selectedHandTileIdx, selectHandTile, rotateHandTile, handRotations, gameData, tradeFavors, discardLanterns, placeTile, skipTurnStep }: Props) => {
+const PlayArea = ({ player, selectedHandTileIdx, selectHandTile, rotateHandTile, handRotations, gameData, discardLanterns, placeTile, skipTurnStep }: Props) => {
   // eslint-disable-next-line no-unused-vars
   const lanternsCount = Object.keys(player.lanterns).reduce((previous, color) => previous + player.lanterns[color], 0)
 
@@ -63,10 +63,7 @@ const PlayArea = ({ player, selectedHandTileIdx, selectHandTile, rotateHandTile,
       </div>
 
       {gameData.turnStep === 0 &&
-      <div>
-        <Button label="Trade Favors" handleClick={tradeFavors} />
-        <Button label="Skip" handleClick={skipTurnStep} />
-      </div>
+      <TradeFavors />
     }
 
       {/* gameData.turnStep <= 1 &&

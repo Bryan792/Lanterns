@@ -58,11 +58,11 @@ export const placeTile = () => (dispatch: Function, getState: Function, socket: 
   }
 }
 
-export const tradeFavors = () => (dispatch: Function, getState: Function, socket: object) => {
+export const tradeFavors = (giveColor, getColor) => (dispatch: Function, getState: Function, socket: object) => {
   // TODO check if possible
   socket.emit('tradeFavors', {
-    giveColor: getState().game.get('selectedHandLantern'),
-    getColor: getState().game.get('selectedGridLantern'),
+    giveColor,
+    getColor,
   })
 }
 
