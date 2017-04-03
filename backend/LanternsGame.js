@@ -365,7 +365,7 @@ function LanternsGame(players) {
       return;
     }
     //any dedicationType left?
-    if (game.dedications[dedicationType] === 0 && game.dedication['fours'] === 0) {
+    if (game.dedications[dedicationType].legnth === 0 && game.dedications['fours'].length === 0) {
       console.log('cannot buy anymore');
       return;
     }
@@ -417,9 +417,7 @@ function LanternsGame(players) {
     }
 
     //Valid
-    if (game.dedications[dedicationType] === 0)
-      dedicationType = 'fours';
-    let points = game.dedications[dedicationType].shift();
+    let points = game.dedications[game.dedications[dedicationType].length !== 0 ? dedicationType : 'fours'].shift();
     player.points += points;
     console.log(player.name + ' gained ' + points + ' points');
 
@@ -457,6 +455,9 @@ function LanternsGame(players) {
       game.lanterns[color] += lanterns[color];
       player.lanterns[color] -= lanterns[color];
     }
+
+    //TODO HACKY
+    game.turnStep--;
     progressTurnStep(player);
   }
 
