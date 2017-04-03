@@ -6,7 +6,7 @@ import Lobby from '../container/lobby'
 import Player from '../container/player'
 import Grid from '../container/grid'
 import Lantern from './lantern'
-import Dedication from './dedication'
+import Dedication from '../container//dedication'
 import PlayArea from '../container/play-area'
 
 const COLOR_ORANGE = 'Orange'
@@ -245,7 +245,7 @@ class Game extends React.Component {
 
                 <div>
                   {
-        ['uniques', 'threePair', 'fourOfAKind']
+        ['uniques', 'threePair', 'fourOfAKind', 'fours']
           .filter(type => gameData.dedications[type].length > 0,
         )
         .map(type =>

@@ -1,22 +1,27 @@
 import React from 'react'
+import ReactTooltip from 'react-tooltip'
 
 type Props = {
   type: string,
-  points: number,
+  gameData: {},
 }
 
-const Dedication = ({ points, type }: Props) => {
+const Dedication = ({ gameData, type }: Props) => {
   const style = {
     boxSizing: 'border-box',
-    height: 100,
-    width: 75,
+    margin: 2,
     border: 2,
+    borderColor: 'black',
+    borderStyle: 'solid',
+    textAlign: 'center',
   }
 
   return (
     <div style={style}>
-      <div>{points}</div>
+      <div>{gameData.dedications[type][0]}</div>
       <div>{type}</div>
+      <div data-tip={gameData.dedications[type]}>{gameData.dedications[type].length} remaining</div>
+      <ReactTooltip place="top" type="dark" effect="float" />
     </div>
   )
 }
