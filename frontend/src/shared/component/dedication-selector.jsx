@@ -65,7 +65,7 @@ class DedicationSelector extends React.Component {
 
     return (
       <div>
-        {['uniques', 'threePair', 'fourOfAKind'].filter(type => possibleDedications[type]).map(type => <button
+        {['uniques', 'threePair', 'fourOfAKind'].filter(type => (gameData.dedications[type].length > 0 || gameData.dedications.fours.length > 0) && possibleDedications[type]).map(type => <button
           onClick={() => {
             this.setState({
               dedicationType: type,
@@ -128,7 +128,7 @@ class DedicationSelector extends React.Component {
                         giveLanterns[color] = 2
                         break
                       case 'fourOfAKind':
-                        giveLanterns[color] = 1
+                        giveLanterns[color] = 4
                         break
                       default:
                         break
