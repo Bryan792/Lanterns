@@ -52,63 +52,167 @@ class Game extends React.Component {
 
     const { playerDir, gameData, selectedGridLantern, selectGridLantern } = this.props
 
-
-    const styles = {
-      [DIR_NORTH]: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-      },
-      [DIR_EAST]: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-      },
-      [DIR_SOUTH]: {
-        position: 'absolute',
-        bottom: 0,
-        right: 0,
-      },
-      [DIR_WEST]: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-      },
-    }
-
     return (
-      <div>
+      <div className="container">
         {gameData &&
-        <div>
+        <div className="container">
           {gameData.turn === 'NEW_GAME' ?
             <Lobby />
           :
             <div
+              className="container"
               style={{
                 display: 'flex',
                 flexDirection: 'column',
+                justifyContent: 'space-between',
               }}
             >
 
-              {Object.keys(gameData.players).map(dir =>
-                <div
-                  style={{
-                    ...styles[dir],
-                    border: 2,
-                    borderStyle: 'solid',
-                    borderColor: dir === playerDir ? 'yellow' : 'black',
-                  }}
-                  key={dir}
-                >
-                  <Player player={gameData.players[dir]} />
-                </div>,
-        )}
 
-              <h2>{gameData.turn}</h2>
               <div
                 style={{
                   display: 'flex',
+                  flexDirection: 'row',
+                }}
+              >
+
+                <div
+                  style={{
+                    flex: 1,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    order: 0,
+                  }}
+                >
+                  {DIR_NORTH in gameData.players &&
+
+                    <div
+                      style={{
+                        marginRight: 'auto',
+                        border: 2,
+                        borderStyle: 'solid',
+                        borderColor: DIR_NORTH === playerDir ? 'yellow' : 'black',
+                      }}
+                    >
+                      <Player player={gameData.players[DIR_NORTH]} />
+                    </div>
+                    }
+                </div>
+
+                <div
+                  style={{
+                    flex: 1,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    order: 2,
+                  }}
+                >
+
+                  {DIR_EAST in gameData.players &&
+                    <div
+                      style={{
+                        marginLeft: 'auto',
+                        border: 2,
+                        borderStyle: 'solid',
+                        borderColor: DIR_EAST === playerDir ? 'yellow' : 'black',
+                      }}
+                    >
+                      <Player player={gameData.players[DIR_EAST]} />
+                    </div>
+                    }
+                </div>
+
+
+                <div
+                  style={{
+                    flex: 1,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    order: 1,
+                  }}
+                />
+
+              </div>
+
+
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  order: 2,
+                  alignItems: 'flex-end',
+                }}
+              >
+
+                <div
+                  style={{
+                    flex: 1,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    order: 0,
+                  }}
+                >
+                  {DIR_WEST in gameData.players &&
+
+                    <div
+                      style={{
+                        marginRight: 'auto',
+                        border: 2,
+                        borderStyle: 'solid',
+                        borderColor: DIR_WEST === playerDir ? 'yellow' : 'black',
+                      }}
+                    >
+                      <Player player={gameData.players[DIR_WEST]} />
+                    </div>
+                    }
+                </div>
+
+                <div
+                  style={{
+                    flex: 1,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    order: 2,
+                  }}
+                >
+
+                  {DIR_SOUTH in gameData.players &&
+                    <div
+                      style={{
+                        marginLeft: 'auto',
+                        border: 2,
+                        borderStyle: 'solid',
+                        borderColor: DIR_SOUTH === playerDir ? 'yellow' : 'black',
+                      }}
+                    >
+                      <Player player={gameData.players[DIR_SOUTH]} />
+                    </div>
+                    }
+                </div>
+
+
+                <div
+                  style={{
+                    flex: 1,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    order: 1,
+                  }}
+                >
+                  {playerDir && playerDir === gameData.turn &&
+                  <PlayArea player={gameData.players[playerDir]} />
+              }
+
+                </div>
+              </div>
+
+              <div
+                style={{
+                  margin: 'auto 0',
+                  display: 'flex',
                   justifyContent: 'space-between',
+                  alignItems: 'center',
+                  order: 1,
                 }}
               >
 
@@ -153,18 +257,6 @@ class Game extends React.Component {
               </div>
 
 
-              {playerDir && playerDir === gameData.turn &&
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  alignSelf: 'center',
-                }}
-              >
-                <PlayArea player={gameData.players[playerDir]} />
-
-              </div>
-        }
             </div>
       }
         </div>

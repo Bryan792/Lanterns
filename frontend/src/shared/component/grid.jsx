@@ -103,9 +103,8 @@ class Grid extends React.Component {
       <div
         style={{
           display: 'flex',
-          justifyContent: 'center',
+          alignItems: 'center',
           transform: 'rotate(-45deg)',
-          overflow: 'hidden',
         }}
       >
         {column}

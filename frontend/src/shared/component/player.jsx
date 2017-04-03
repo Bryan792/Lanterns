@@ -49,8 +49,7 @@ const Player = ({ player, selectedHandLantern, selectHandLantern }: Props) =>
   </button>,
   )}
     </div>
-    <div>{player.favors} favors</div>
-    <div>{player.points} points</div>
+    <div>{player.favors} favors {player.points} points</div>
   </div>
 
 export default Player

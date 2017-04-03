@@ -10,7 +10,7 @@ import HomePage from './component/page/home'
 import GamePage from './component/page/game-page'
 import { HOME_PAGE_ROUTE, gameRoute } from './routes'
 
-const App = () => <div>
+const App = () => <div className="container">
   <Helmet titleTemplate={`%s | ${APP_NAME}`} defaultTitle={APP_NAME} />
   <Header />
   <Switch>
