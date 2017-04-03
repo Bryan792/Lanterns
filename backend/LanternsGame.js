@@ -20,7 +20,7 @@ const DIR_ARRAY = [DIR_NORTH, DIR_EAST, DIR_SOUTH, DIR_WEST];
 function LanternsGame(players) {
   let game = {
     tiles: generateTiles(),
-    tileOrder: shuffle(range(1, 37)),
+    tileOrder: _.take(shuffle(range(1, 37)), 20),
     grid: [
       {
         tileIdx: 0,
@@ -45,7 +45,8 @@ function LanternsGame(players) {
       fourOfAKind: [8, 7, 7, 6, 6, 5, 5, 5, 4],
       fours: [4, 4, 4],
     },
-    turn: 'NEW_GAME',
+    stage: 'NEW_GAME',
+    turn: '',
     turnStep: -1,
     placeTile: placeTile,
     tradeFavors: tradeFavors,
@@ -75,8 +76,10 @@ function LanternsGame(players) {
     //Deal hands here maybe instead?
 
     //TODO: random
+    game.stage = 'GAME'
     game.turn = DIR_NORTH;
-    game.turnStep = 3;
+    game.turnStep = -1;
+    progressTurnStep(game.players[game.turn]);
   }
 
   function skipTurnStep(playerDir) {
@@ -95,6 +98,8 @@ function LanternsGame(players) {
   function progressTurnStep(player) {
     game.turnStep += 1;
     let handCount = Object.keys(player.lanterns).reduce((previous, color) => previous + player.lanterns[color], 0);
+
+    //TODO this could be refactored to not be recursive
     switch (game.turnStep) {
       case 0: {
         if (player.favors < 2) {
@@ -127,6 +132,16 @@ function LanternsGame(players) {
         break;
       }
       case 3:
+        //TODO can this be done more elegantly?
+        console.log(player.hand.length)
+        if (player.hand.length === 0) {
+          player.playedFinalTurn = true;
+          if (Object.keys(game.players).every(dir => game.players[dir].playedFinalTurn)) {
+            endGame();
+          } else {
+            progressTurn();
+          }
+        }
         break;
       default: {
         console.log(`ERROR: TurnStep weird number: ${game.turnStep}`);
@@ -134,6 +149,11 @@ function LanternsGame(players) {
       }
     }
 
+  }
+
+  function endGame() {
+    game.stage = 'END_GAME';
+    console.log('game ended')
   }
 
   function getRandColor() {
@@ -169,10 +189,6 @@ function LanternsGame(players) {
       }
     }
     return tiles;
-  }
-
-  function generateTileOrder() {
-    let arr = range(1, 36);
   }
 
   function placeTile(playerDir, tileIdx, x, y, numRotations) {
@@ -282,7 +298,11 @@ function LanternsGame(players) {
     });
 
     //remove tile from player and give new tile
-    player.hand.splice(player.hand.indexOf(tileIdx), 1, game.tileOrder.pop());
+    if (game.tileOrder.length > 0) {
+      player.hand.splice(player.hand.indexOf(tileIdx), 1, game.tileOrder.pop());
+    } else {
+      player.hand.splice(player.hand.indexOf(tileIdx), 1);
+    }
 
     //progressTurn
     progressTurn();
@@ -403,6 +423,7 @@ function LanternsGame(players) {
         }
       }
     } else if (dedicationType === 'fourOfAKind') {
+      console.log(lanterns);
       if (Object.keys(lanterns).length !== 1) {
         console.log('wrong number of lanterns given');
         return;
@@ -506,7 +527,7 @@ function LanternsGame(players) {
   }
 
   function getPlayerData() {
-    let allPlayerData = _.pick(game, ['lanterns', 'favors', 'dedications', 'turn', 'turnStep']);
+    let allPlayerData = _.pick(game, ['lanterns', 'favors', 'dedications', 'turn', 'turnStep', 'stage']);
     allPlayerData.grid = game.grid.map(tile => Object.assign({}, game.tiles[tile.tileIdx], tile)
     );
     allPlayerData.players = _.mapValues(game.players, (player, dir) => {

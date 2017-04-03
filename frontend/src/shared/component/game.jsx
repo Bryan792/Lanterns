@@ -56,9 +56,13 @@ class Game extends React.Component {
       <div className="container">
         {gameData &&
         <div className="container">
-          {gameData.turn === 'NEW_GAME' ?
+          {gameData.stage === 'NEW_GAME' &&
             <Lobby />
-          :
+          }
+          {gameData.stage === 'END_GAME' &&
+          <div>{JSON.stringify(gameData.players)}</div>
+          }
+          {(gameData.stage === 'GAME') &&
             <div
               className="container"
               style={{
