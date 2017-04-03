@@ -26,6 +26,10 @@ class DiscardSelector extends React.Component {
     lanterns: {},
   }
 
+  componentWillReceiveProps() {
+    this.setState({ lanterns: {} })
+  }
+
   props: {
     lanterns: {},
     handleDiscard: Function,
@@ -34,27 +38,51 @@ class DiscardSelector extends React.Component {
   render() {
     const { lanterns, handleDiscard } = this.props
     return (
-      <div>
-        {Object.keys(lanterns).filter(color => lanterns[color] > 0).sort((color1, color2) => lanterns[color2] - lanterns[color1]).map(color => <button
-          style={{
-            height: 70,
-            width: 40,
-            borderStyle: 'solid',
-            borderColor: 'black',
-            border: 2,
-            margin: 2,
-          }}
-          onClick={() => {
-            if (this.state.lanterns[color] !== lanterns[color]) { this.setState({ lanterns: { ...this.state.lanterns, [color]: (this.state.lanterns[color] || 0) + 1 } }) }
-          }}
-          key={color}
-        >
-          <Lantern color={color} count={this.state.lanterns[color] || 0} />
-        </button>,
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+        }}
+      >
+        {Object.keys(lanterns).filter(color => lanterns[color] > 0).sort((color1, color2) => lanterns[color2] - lanterns[color1]).map(color =>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+            key={color}
+          >
+            <button
+              onClick={() => {
+                if (this.state.lanterns[color] !== lanterns[color]) { this.setState({ lanterns: { ...this.state.lanterns, [color]: (this.state.lanterns[color] || 0) + 1 } }) }
+              }}
+            >
+          +
+        </button>
+            <div
+              style={{
+                height: 70,
+                width: 40,
+                borderStyle: 'solid',
+                borderColor: 'black',
+                border: 2,
+                margin: 2,
+              }}
+            >
+              <Lantern color={color} count={this.state.lanterns[color] || 0} />
+            </div>
+            <button
+              onClick={() => {
+                if (this.state.lanterns[color] > 0) { this.setState({ lanterns: { ...this.state.lanterns, [color]: this.state.lanterns[color] - 1 } }) }
+              }}
+            >
+          -
+        </button>
+          </div>,
         )}
         <button
           onClick={() => {
-            handleDiscard(lanterns)
+            handleDiscard(this.state.lanterns)
           }}
         >Discard</button>
       </div>
