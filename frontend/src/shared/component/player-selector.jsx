@@ -47,8 +47,7 @@ class PlayerSelector extends React.Component {
     } else {
       row =
         (<form onSubmit={this.handleSubmit}>
-          <label htmlFor="name">{direction}</label>
-          <input id="name" type="text" value={this.state.name} onChange={this.handleNameChange} />
+          <input type="text" value={this.state.name} onChange={this.handleNameChange} />
           <input type="submit" value="Submit" />
         </form>)
     }

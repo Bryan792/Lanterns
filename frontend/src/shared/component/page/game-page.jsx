@@ -13,11 +13,11 @@ const GamePage = (props: {match: {params: {gameId: string}}}) =>
         { property: 'og:title', content: `Lanterns: ${props.match.params.gameId}` },
       ]}
     />
-    <h2
+    <h3
       style={{
         alignSelf: 'center',
       }}
-    >{props.match.params.gameId}</h2>
+    >{props.match.params.gameId}</h3>
     <Game gameId={props.match.params.gameId} />
   </div>
 

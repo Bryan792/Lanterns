@@ -40,9 +40,11 @@ const styles = {
 
 const Lobby = ({ addPlayer, gameData, playerDir, startGame }: Props) =>
   <div
+    className="container"
     style={{
       display: 'flex',
       justifyContent: 'center',
+      position: 'relative',
     }}
   >
     {DIR_ARRAY.map(dir => (
