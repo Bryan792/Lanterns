@@ -1,5 +1,7 @@
 import React from 'react'
+import styled from 'styled-components'
 
+import { SpacedRow } from './styled-flex'
 import Tile from './tile'
 import Rotater from './rotater'
 import Button from './button'
@@ -23,80 +25,59 @@ const PlayArea = ({ player, selectedHandTileIdx, selectHandTile, rotateHandTile,
   // eslint-disable-next-line no-unused-vars
   const lanternsCount = Object.keys(player.lanterns).reduce((previous, color) => previous + player.lanterns[color], 0)
 
+  const Container = styled.div`
+    width: 350px;
+    border: 2px solid black;
+  `
+
+  const TileContainer = styled.button`
+    width: 80px;
+    height: 80px;
+    margin: 20px;
+    backgroundColor: {props => (props.selected) ? 'yellow' : 'grey')};
+  `
+
   return (
-    <div
-      style={{
-        border: 2,
-        borderColor: 'black',
-        borderStyle: 'solid',
-      }}
-    >
+    <Container>
 
       {/* Hand Tiles */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
+      <SpacedRow>
         {player.hand.map((tile, index) =>
-          <button
-            style={{
-              height: 50,
-              width: 50,
-              backgroundColor: selectedHandTileIdx === index ? 'yellow' : 'grey',
-            }}
+          <TileContainer
+            selected={selectedHandTileIdx === index}
             onClick={() => {
               selectHandTile(index)
             }}
             key={tile.tileIdx}
           >
             <Rotater
-              size={50} handleRotate={() => {
+              size={75} handleRotate={() => {
                 rotateHandTile(tile.tileIdx)
               }}
             >
-              <Tile tile={tile} size={50} numRotations={handRotations.get(tile.tileIdx) || 0} />
+              <Tile tile={tile} size={75} numRotations={handRotations.get(tile.tileIdx) || 0} />
             </Rotater>
-          </button>,
+          </TileContainer>,
       )}
-      </div>
+      </SpacedRow>
 
       {gameData.turnStep === 0 &&
       <TradeFavors />
-    }
+      }
 
-      {/* gameData.turnStep <= 1 &&
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                  }}
-                >
-
-                  {
-        ['uniques', 'threePair', 'fourOfAKind']
-          .filter(type => gameData.dedications[type].length > 0,
-        )
-          .map(type => <div key={type}><Dedication points={gameData.dedications[type][0]} type={type} />
-            {possibleDedications[type].length > 0 &&
-            <DedicationSelector onDedicationSelected={buyDedication} type={type} possibleDedications={possibleDedications[type]} />}
-          </div>)}
-                </div>
-                */}
       {gameData.turnStep === 1 &&
-        <DedicationSelector />
-    }
+      <DedicationSelector />
+      }
 
       {gameData.turnStep === 2 &&
       <DiscardSelector lanterns={player.lanterns} handleDiscard={discardLanterns} />
-    }
+      }
 
       {gameData.turnStep === 3 &&
       <Button label="Place Tile" handleClick={placeTile} />
-    }
+      }
 
-    </div>
+    </Container>
   )
 }
 

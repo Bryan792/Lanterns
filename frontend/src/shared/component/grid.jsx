@@ -1,5 +1,7 @@
 import React from 'react'
+import styled from 'styled-components'
 
+import { Col } from './styled-flex'
 import Tile from './tile'
 import Rotater from './rotater'
 
@@ -24,16 +26,29 @@ class Grid extends React.Component {
     // const width = (maxX - minX) + 1
     // const height = (maxY - minY) + 1
 
-    const style = {
-      boxSizing: 'border-box',
-      margin: 0,
-      padding: 0,
-      border: 0,
-      WebkitAppearance: 'none',
-      MozAppearance: 'none',
-      height: 50,
-      width: 50,
-    }
+    const Cell = styled.div`
+      height: 50px;
+      width: 50px;
+      text-align: center;
+    `
+
+    const SelectedCell = styled(Cell)`
+      background-color: yellow;
+    `
+
+    const AdjacentCell = styled(Cell)`
+      border: 2px dashed;
+    `
+
+    const EmptyCell = styled(Cell)`
+      visibility: hidden;
+    `
+
+    const RotatedGrid = styled.div`
+      display: flex;
+      align-items: center;
+      transform: rotate(-45deg);
+    `
 
     // TODO evaluate changing to all relative positions
     const column = []
@@ -44,7 +59,7 @@ class Grid extends React.Component {
         const tileMatched = grid.some((tile) => {
           if (tile.x === x) {
             if (tile.y === y) {
-              row.push(<div style={style} key={`${x} ${y}`}><Tile tile={tile} size={50} numRotations={0} /></div>)
+              row.push(<Cell key={`${x} ${y}`}><Tile tile={tile} size={50} numRotations={0} /></Cell>)
               return true
             }
             if (!adjacent) {
@@ -66,49 +81,31 @@ class Grid extends React.Component {
         if (!tileMatched) {
           if (adjacent) {
             if (selectedHandTile && selectedGridCoord && x === selectedGridCoord.x && y === selectedGridCoord.y) {
-              row.push(<div
-                style={{
-                  ...style,
-                  backgroundColor: 'yellow',
-                }} key={`${x} ${y}`}
-              ><Rotater size={50} handleRotate={() => rotateHandTile(selectedHandTile.tileIdx)}>
-                <Tile tile={selectedHandTile} size={50} numRotations={handRotations.get(selectedHandTile.tileIdx) || 0} />
-              </Rotater>
-              </div>)
+              row.push(<SelectedCell key={`${x} ${y}`}>
+                <Rotater size={50} handleRotate={() => rotateHandTile(selectedHandTile.tileIdx)}>
+                  <Tile tile={selectedHandTile} size={50} numRotations={handRotations.get(selectedHandTile.tileIdx) || 0} />
+                </Rotater>
+              </SelectedCell>)
             } else {
-              row.push(<button
-                style={{
-                  ...style,
-                  borderStyle: 'dashed',
-                  border: 2,
-                }} size={50} key={`${x} ${y}`} onClick={() => {
+              row.push(<AdjacentCell
+                size={50} key={`${x} ${y}`} onClick={() => {
                   selectGridCoord(x, y)
                 }}
               />)
             }
           } else {
-            row.push(<div style={style} size={50} key={`${x} ${y}`} />)
+            row.push(<EmptyCell key={`${x} ${y}`} />)
           }
         }
       }
-      column.push(<div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-        }}
+      column.push(<Col
         key={x}
-      >{row}</div>)
+      >{row}</Col>)
     }
     return (
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          transform: 'rotate(-45deg)',
-        }}
-      >
+      <RotatedGrid>
         {column}
-      </div>
+      </RotatedGrid>
     )
   }
 }

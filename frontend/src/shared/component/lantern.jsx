@@ -1,21 +1,19 @@
 import React from 'react'
+import styled from 'styled-components'
 
 type Props = {
   color: string,
   count: number,
 }
 
-const Lantern = ({ color, count }: Props) => {
-  const style = {
-    boxSizing: 'border-box',
-    height: '100%',
-    width: '100%',
-    backgroundColor: color,
-  }
+const StyledLantern = styled.div`
+  height: 100%;
+  background-color: ${props => props.color};
+  color: ${props => (props.color === 'Black' ? 'white' : 'black')};
+`
 
-  return (
-    <div style={style}>{count}</div>
+const Lantern = ({ color, count }: Props) => (
+  <StyledLantern color={color}>{count}</StyledLantern>
   )
-}
 
 export default Lantern

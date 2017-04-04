@@ -1,7 +1,9 @@
 // TODO: Flow annotate props?
 import React from 'react'
 import { withRouter } from 'react-router'
+import styled from 'styled-components'
 
+import { Row, Col, SpacedCol } from './styled-flex'
 import Lobby from '../container/lobby'
 import Player from '../container/player'
 import Grid from '../container/grid'
@@ -36,219 +38,103 @@ class Game extends React.Component {
   playerDir: string,
   gameData: object,
   loadGame: Function,
-  selectedGridLantern: ?string,
-  selectGridLantern: Function,
+  gameId: string,
   }
 
   render() {
-    const style = {
-      boxSizing: 'border-box',
-      margin: 0,
-      padding: 0,
-      border: 0,
-      WebkitAppearance: 'none',
-      MozAppearance: 'none',
-    }
+    const { playerDir, gameData, gameId } = this.props
 
-    const { playerDir, gameData, selectedGridLantern, selectGridLantern } = this.props
+    const FlexBlock = styled.div`
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    `
 
-    return (
-      <div className="container">
-        {gameData &&
-        <div className="container">
-          {gameData.stage === 'NEW_GAME' &&
-            <Lobby />
-          }
-          {gameData.stage === 'END_GAME' &&
-          <div>{JSON.stringify(gameData.players)}</div>
-          }
-          {(gameData.stage === 'GAME') &&
-            <div
-              className="container"
+    const LanternContainer = styled.div`
+      height: 40px;
+      width: 70px;
+      margin: 2px;
+      border: 2px;
+      border-style: solid;
+      border-color: black;
+      opacity: ${props => (props.light ? 0.5 : 1)}
+    `
+
+
+    if (!gameData) return null
+    switch (gameData.stage) {
+      case 'NEW_GAME':
+        return <Lobby />
+      case 'GAME':
+        return (
+          <SpacedCol className="container">
+            <Row>
+              <FlexBlock>
+                {DIR_NORTH in gameData.players &&
+                  <Player player={gameData.players[DIR_NORTH]} active={playerDir === DIR_NORTH} left />
+                    }
+              </FlexBlock>
+
+              <FlexBlock>
+                <h3>{gameId}</h3>
+              </FlexBlock>
+
+              <FlexBlock>
+                {DIR_EAST in gameData.players &&
+                  <Player player={gameData.players[DIR_EAST]} active={playerDir === DIR_EAST} right />
+                    }
+              </FlexBlock>
+            </Row>
+
+
+            <Row
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
+                order: 2,
+                alignItems: 'flex-end',
               }}
             >
 
-
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                }}
-              >
-
-                <div
-                  style={{
-                    flex: 1,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    order: 0,
-                  }}
-                >
-                  {DIR_NORTH in gameData.players &&
-
-                    <div
-                      style={{
-                        marginRight: 'auto',
-                        border: 2,
-                        borderStyle: 'solid',
-                        borderColor: DIR_NORTH === playerDir ? 'yellow' : 'black',
-                      }}
-                    >
-                      <Player player={gameData.players[DIR_NORTH]} />
-                    </div>
+              <FlexBlock>
+                {DIR_WEST in gameData.players &&
+                  <Player player={gameData.players[DIR_WEST]} active={playerDir === DIR_WEST} left />
                     }
-                </div>
+              </FlexBlock>
 
-                <div
-                  style={{
-                    flex: 1,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    order: 2,
-                  }}
-                >
-
-                  {DIR_EAST in gameData.players &&
-                    <div
-                      style={{
-                        marginLeft: 'auto',
-                        border: 2,
-                        borderStyle: 'solid',
-                        borderColor: DIR_EAST === playerDir ? 'yellow' : 'black',
-                      }}
-                    >
-                      <Player player={gameData.players[DIR_EAST]} />
-                    </div>
-                    }
-                </div>
-
-
-                <div
-                  style={{
-                    flex: 1,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    order: 1,
-                  }}
-                />
-
-              </div>
-
-
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  order: 2,
-                  alignItems: 'flex-end',
-                }}
-              >
-
-                <div
-                  style={{
-                    flex: 1,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    order: 0,
-                  }}
-                >
-                  {DIR_WEST in gameData.players &&
-
-                    <div
-                      style={{
-                        marginRight: 'auto',
-                        border: 2,
-                        borderStyle: 'solid',
-                        borderColor: DIR_WEST === playerDir ? 'yellow' : 'black',
-                      }}
-                    >
-                      <Player player={gameData.players[DIR_WEST]} />
-                    </div>
-                    }
-                </div>
-
-                <div
-                  style={{
-                    flex: 1,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    order: 2,
-                  }}
-                >
-
-                  {DIR_SOUTH in gameData.players &&
-                    <div
-                      style={{
-                        marginLeft: 'auto',
-                        border: 2,
-                        borderStyle: 'solid',
-                        borderColor: DIR_SOUTH === playerDir ? 'yellow' : 'black',
-                      }}
-                    >
-                      <Player player={gameData.players[DIR_SOUTH]} />
-                    </div>
-                    }
-                </div>
-
-
-                <div
-                  style={{
-                    flex: 1,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    order: 1,
-                  }}
-                >
-                  {playerDir && playerDir === gameData.turn &&
+              <FlexBlock>
+                {playerDir && playerDir === gameData.turn &&
                   <PlayArea player={gameData.players[playerDir]} />
               }
+              </FlexBlock>
 
-                </div>
-              </div>
+              <FlexBlock>
+                {DIR_SOUTH in gameData.players &&
+                  <Player player={gameData.players[DIR_SOUTH]} active={playerDir === DIR_SOUTH} left />
+                    }
+              </FlexBlock>
+            </Row>
 
-              <div
-                style={{
-                  margin: 'auto 0',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  order: 1,
-                }}
-              >
 
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
+            <Row
+              style={{
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                order: 1,
+              }}
+            >
+
+              <Col>
+                {Object.keys(gameData.lanterns).sort((color1, color2) => gameData.lanterns[color2] - gameData.lanterns[color1]).map(color => <LanternContainer
+                  key={color}
                 >
-                  {Object.keys(gameData.lanterns).sort((color1, color2) => gameData.lanterns[color2] - gameData.lanterns[color1]).map(color => <button
-                    style={{
-                      ...style,
-                      height: 40,
-                      width: 70,
-                      borderStyle: 'solid',
-                      borderColor: color === selectedGridLantern ? 'yellow' : 'black',
-                      border: 2,
-                      margin: 2,
-                    }}
-                    onClick={() => {
-                      selectGridLantern(color)
-                    }}
-                    key={color}
-                  >
-                    <Lantern color={color} count={gameData.lanterns[color]} />
-                  </button>,
+                  <Lantern color={color} count={gameData.lanterns[color]} />
+                </LanternContainer>,
         )}
-                </div>
-                <Grid />
+              </Col>
 
-                <div>
-                  {
+              <Grid />
+
+              <Col>
+                {
         ['uniques', 'threePair', 'fourOfAKind', 'fours']
           .filter(type => gameData.dedications[type].length > 0,
         )
@@ -256,17 +142,17 @@ class Game extends React.Component {
           <div key={type}>
             <Dedication points={gameData.dedications[type][0]} type={type} />
           </div>)}
-                </div>
+              </Col>
 
-              </div>
-
-
-            </div>
-      }
-        </div>
-      }
-      </div>
-    )
+            </Row>
+          </SpacedCol>
+        )
+      case 'END_GAME':
+        return <div>{JSON.stringify(gameData.players)}</div>
+      default:
+        break
+    }
+    return null
   }
 }
 

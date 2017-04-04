@@ -1,6 +1,8 @@
 // TODO: fix flow annotations
 import React from 'react'
+import styled from 'styled-components'
 
+import { Row, Col } from './styled-flex'
 import Lantern from './lantern'
 import Button from './button'
 
@@ -46,73 +48,52 @@ class TradeFavors extends React.Component {
     const giveLanterns = gameData.players[playerDir].lanterns
     const getLanterns = gameData.lanterns
 
+    const LanternContainer = styled.div`
+      height: 70px;
+      width: 40px;
+      margin: 2px;
+      border: 2px;
+      border-style: solid;
+      border-color: black;
+      opacity: ${props => (props.light ? 0.5 : 1)}
+    `
+
     return (
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-          }}
-        >
+      <Col>
+        <Row>
           Give
         {Object.keys(giveLanterns).filter(color => giveLanterns[color] > 0).sort((color1, color2) => giveLanterns[color2] - giveLanterns[color1]).map(color =>
-          <button
-            style={{
-              height: 70,
-              width: 40,
-              borderStyle: 'solid',
-              borderColor: 'black',
-              border: 2,
-              margin: 2,
-              opacity: color === this.state.giveColor ? 1 : 0.5,
-            }}
+          <LanternContainer
             onClick={() => {
               this.setState({ giveColor: color })
             }}
             key={color}
+            light={color !== this.state.giveColor}
           >
             <Lantern color={color} count={giveLanterns[color]} />
-          </button>,
+          </LanternContainer>,
         )}
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-          }}
-        >
+        </Row>
+        <Row>
         Get
-        {Object.keys(getLanterns).filter(color => getLanterns[color] > 0).sort((color1, color2) => getLanterns[color2] - getLanterns[color1]).map(color => <button
-          style={{
-            height: 70,
-            width: 40,
-            borderStyle: 'solid',
-            borderColor: 'black',
-            border: 2,
-            margin: 2,
-            opacity: color === this.state.getColor ? 1 : 0.5,
-          }}
+        {Object.keys(getLanterns).filter(color => getLanterns[color] > 0).sort((color1, color2) => getLanterns[color2] - getLanterns[color1]).map(color => <LanternContainer
           onClick={() => {
             this.setState({ getColor: color })
           }}
           key={color}
+          light={color !== this.state.getColor}
         >
           <Lantern color={color} count={getLanterns[color]} />
-        </button>,
+        </LanternContainer>,
         )}
-        </div>
+        </Row>
         <Button
           label="Trade Favors" handleClick={() => {
             tradeFavors(this.state.giveColor, this.state.getColor)
           }}
         />
         <Button label="Skip" handleClick={skipTurnStep} />
-      </div>
+      </Col>
     )
   }
 }

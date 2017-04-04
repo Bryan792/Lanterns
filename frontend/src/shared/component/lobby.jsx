@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { SpacedCol, SpacedRow } from './styled-flex'
 import PlayerSelector from './player-selector'
 
 const DIR_NORTH = 'North'
 const DIR_EAST = 'East'
 const DIR_SOUTH = 'South'
 const DIR_WEST = 'West'
-const DIR_ARRAY = [DIR_NORTH, DIR_EAST, DIR_SOUTH, DIR_WEST]
 
 type Props = {
   addPlayer: Function,
@@ -15,44 +15,17 @@ type Props = {
   startGame: Function,
 }
 
-const styles = {
-  [DIR_NORTH]: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-  [DIR_EAST]: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-  },
-  [DIR_SOUTH]: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-  },
-  [DIR_WEST]: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-  },
-}
-
 const Lobby = ({ addPlayer, gameData, playerDir, startGame }: Props) =>
-  <div
-    className="container"
-    style={{
-      display: 'flex',
-      justifyContent: 'center',
-      position: 'relative',
-    }}
-  >
-    {DIR_ARRAY.map(dir => (
-      <div style={styles[dir]} key={dir}>
-        <PlayerSelector handleSubmit={addPlayer} direction={dir} player={gameData.players[dir]} key={dir} shouldShowSubmit={!playerDir} />
-      </div>
-  ))}
+  <SpacedCol className="container">
+    <SpacedRow>
+      <PlayerSelector handleSubmit={addPlayer} direction={DIR_NORTH} player={gameData.players[DIR_NORTH]} shouldShowSubmit={!playerDir} />
+      <PlayerSelector handleSubmit={addPlayer} direction={DIR_EAST} player={gameData.players[DIR_EAST]} shouldShowSubmit={!playerDir} />
+    </SpacedRow>
     <button onClick={() => { startGame() }}>Start Game</button>
-  </div>
+    <SpacedRow>
+      <PlayerSelector handleSubmit={addPlayer} direction={DIR_WEST} player={gameData.players[DIR_WEST]} shouldShowSubmit={!playerDir} />
+      <PlayerSelector handleSubmit={addPlayer} direction={DIR_SOUTH} player={gameData.players[DIR_SOUTH]} shouldShowSubmit={!playerDir} />
+    </SpacedRow>
+  </SpacedCol>
 
 export default Lobby

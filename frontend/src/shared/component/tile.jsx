@@ -1,10 +1,11 @@
 import React from 'react'
+import styled from 'styled-components'
 
 type Props = {
-  tile: {
-  },
-  size: number,
-  numRotations: number,
+tile: {
+},
+size: number,
+numRotations: number,
 }
 
 const DIR_NORTH = 'North'
@@ -20,20 +21,19 @@ const Tile = ({ tile, numRotations, size }: Props) => {
     newTile[DIR_ARRAY[i]] = tile[DIR_ARRAY[(i + (DIR_ARRAY.length - numRotations)) % DIR_ARRAY.length]]
   }
 
-  const style = {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    boxSizing: 'border-box',
-    height: '100%',
-    width: '100%',
-    borderStyle: 'solid',
-    borderWidth: size / 4,
-    borderColor: `${newTile.North} ${newTile.East} ${newTile.South} ${newTile.West}`,
-  }
+  const ColoredTile = styled.div`
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 100%;
+    width: 100%;
+    border-style: solid;
+    border-width: ${size / 4}px;
+    border-color: ${newTile.North} ${newTile.East} ${newTile.South} ${newTile.West};
+  `
 
   return (
-    <div style={style}>{tile.dragon && 'D'}</div>
+    <ColoredTile>{tile.dragon && 'D'}</ColoredTile>
   )
 }
 

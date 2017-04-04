@@ -1,6 +1,8 @@
 import React from 'react'
 import Immutable from 'immutable'
+import styled from 'styled-components'
 
+import { Row } from './styled-flex'
 import Lantern from './lantern'
 import Button from './button'
 
@@ -63,6 +65,16 @@ class DedicationSelector extends React.Component {
       fourOfAKind: 1,
     }
 
+    const LanternContainer = styled.div`
+      height: 70px;
+      width: 40px;
+      margin: 2px;
+      border: 2px;
+      border-style: solid;
+      border-color: black;
+      opacity: ${props => (props.light ? 0.3 : 1)}
+    `
+
     return (
       <div>
         {['uniques', 'threePair', 'fourOfAKind'].filter(type => (gameData.dedications[type].length > 0 || gameData.dedications.fours.length > 0) && possibleDedications[type]).map(type => <button
@@ -80,34 +92,22 @@ class DedicationSelector extends React.Component {
 
         {possibleDedications[this.state.dedicationType] &&
           <div>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-              }}
-            >
+            <Row>
 
-              {possibleDedications[this.state.dedicationType].sort((color1, color2) => playerLanterns[color2] - playerLanterns[color1]).map(color => <button
-                style={{
-                  height: 70,
-                  width: 40,
-                  border: 2,
-                  borderStyle: 'solid',
-                  borderColor: 'black',
-                  margin: 2,
-                  opacity: this.state.lanterns.includes(color) ? 1 : 0.3,
-                }}
-                onClick={() => {
-                  this.setState({
-                    lanterns: this.state.lanterns.includes(color) ? this.state.lanterns.delete(color) : this.state.lanterns.add(color),
-                  })
-                }}
-                key={color}
-              >
-                <Lantern color={color} count={playerLanterns[color]} />
-              </button>,
+              {possibleDedications[this.state.dedicationType].sort((color1, color2) => playerLanterns[color2] - playerLanterns[color1]).map(color =>
+                <LanternContainer
+                  light={!this.state.lanterns.includes(color)}
+                  onClick={() => {
+                    this.setState({
+                      lanterns: this.state.lanterns.includes(color) ? this.state.lanterns.delete(color) : this.state.lanterns.add(color),
+                    })
+                  }}
+                  key={color}
+                >
+                  <Lantern color={color} count={playerLanterns[color]} />
+                </LanternContainer>,
       )}
-            </div>
+            </Row>
             {neededColors[this.state.dedicationType] !== this.state.lanterns.size ?
               <div>
             Select exactly {neededColors[this.state.dedicationType]} colors
@@ -115,8 +115,6 @@ class DedicationSelector extends React.Component {
 :
 
               <button
-                style={{
-                }}
                 onClick={() => {
                   const giveLanterns = {}
                   this.state.lanterns.forEach((color) => {

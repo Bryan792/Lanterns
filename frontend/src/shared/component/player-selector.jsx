@@ -20,6 +20,7 @@ class PlayerSelector extends React.Component {
     player: ?{name: string},
     direction: string,
     shouldShowSubmit: boolean,
+    className: ?string,
   }
 
   handleNameChange(event: Event) {
@@ -36,14 +37,14 @@ class PlayerSelector extends React.Component {
   render() {
     const {
       player,
-      direction,
       shouldShowSubmit,
+      className,
     } = this.props
     let row
     if (player) {
-      row = <div>{direction} {player.name}</div>
+      row = <div>{player.name}</div>
     } else if (!shouldShowSubmit) {
-      row = <div>{direction}</div>
+      row = null
     } else {
       row =
         (<form onSubmit={this.handleSubmit}>
@@ -53,7 +54,7 @@ class PlayerSelector extends React.Component {
     }
 
     return (
-      <div>
+      <div className={className}>
         {row}
       </div>
     )
