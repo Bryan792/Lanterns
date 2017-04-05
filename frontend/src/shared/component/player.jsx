@@ -7,7 +7,6 @@ import Lantern from './lantern'
 type Props = {
 player: {
 },
-handRotations: {},
   className: ?string,
 }
 

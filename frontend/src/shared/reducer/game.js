@@ -33,7 +33,7 @@ const gameReducer = (state: Immut = initialState, action: { type: string, payloa
     case ROTATE_HAND_TILE: {
       // TODO Is it better just to set everything to 0 first? Otherwise there is a nonobvious assumption that if it doesn't exist, it is 0
       let numRotations = state.getIn(['handRotations', action.payload])
-      numRotations = numRotations ? (numRotations += 1) % 4 : 1
+      numRotations = (numRotations || 0) + 1
       return state.setIn(['handRotations', action.payload], numRotations)
     }
     case SELECT_GRID_COORD:

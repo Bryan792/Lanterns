@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { SpacedRow } from './styled-flex'
-import Tile from './tile'
+import Tile from '../container/tile'
 import Rotater from './rotater'
 import Button from './button'
 import DiscardSelector from './discard-selector'
@@ -14,28 +14,28 @@ type Props = {
   },
   selectedHandTileIdx: number,
   selectHandTile: Function,
-  handRotations: {},
   rotateHandTile: Function,
   discardLanterns: Function,
   placeTile: Function,
   gameData: {},
 }
 
-const PlayArea = ({ player, selectedHandTileIdx, selectHandTile, rotateHandTile, handRotations, gameData, discardLanterns, placeTile }: Props) => {
-  // eslint-disable-next-line no-unused-vars
-  const lanternsCount = Object.keys(player.lanterns).reduce((previous, color) => previous + player.lanterns[color], 0)
-
-  const Container = styled.div`
+const Container = styled.div`
     width: 350px;
     border: 2px solid black;
   `
 
-  const TileContainer = styled.button`
+const TileContainer = styled.button`
     width: 80px;
     height: 80px;
-    margin: 20px;
-    backgroundColor: {props => (props.selected) ? 'yellow' : 'grey')};
+    margin: 10px;
+    background-color: white;
+    border: 0;
   `
+
+const PlayArea = ({ player, selectedHandTileIdx, selectHandTile, rotateHandTile, gameData, discardLanterns, placeTile }: Props) => {
+  // eslint-disable-next-line no-unused-vars
+  const lanternsCount = Object.keys(player.lanterns).reduce((previous, color) => previous + player.lanterns[color], 0)
 
   return (
     <Container>
@@ -44,18 +44,17 @@ const PlayArea = ({ player, selectedHandTileIdx, selectHandTile, rotateHandTile,
       <SpacedRow>
         {player.hand.map((tile, index) =>
           <TileContainer
-            selected={selectedHandTileIdx === index}
             onClick={() => {
               selectHandTile(index)
             }}
             key={tile.tileIdx}
           >
             <Rotater
-              size={75} handleRotate={() => {
+              size={80} handleRotate={() => {
                 rotateHandTile(tile.tileIdx)
               }}
             >
-              <Tile tile={tile} size={75} numRotations={handRotations.get(tile.tileIdx) || 0} />
+              <Tile tile={tile} size={80} selected={selectedHandTileIdx === index} />
             </Rotater>
           </TileContainer>,
       )}

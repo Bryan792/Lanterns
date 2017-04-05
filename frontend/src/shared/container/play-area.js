@@ -17,7 +17,6 @@ const mapStateToProps = state => ({
   gameData: state.game.get('gameData'),
   selectedHandTileIdx: state.game.get('selectedHandTileIdx'),
   selectedHandLantern: state.game.get('selectedHandLantern'),
-  handRotations: state.game.get('handRotations'),
 })
 
 const mapDispatchToProps = dispatch => ({

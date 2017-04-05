@@ -2,8 +2,28 @@ import React from 'react'
 import styled from 'styled-components'
 
 import { Col } from './styled-flex'
-import Tile from './tile'
+import Tile from '../container/tile'
 import Rotater from './rotater'
+
+const Cell = styled.div`
+      height: 50px;
+      width: 50px;
+      text-align: center;
+    `
+
+const AdjacentCell = styled(Cell)`
+      border: 2px dashed;
+    `
+
+const EmptyCell = styled(Cell)`
+      visibility: hidden;
+    `
+
+const RotatedGrid = styled.div`
+      display: flex;
+      align-items: center;
+      transform: rotate(-45deg);
+    `
 
 class Grid extends React.Component {
 
@@ -26,29 +46,6 @@ class Grid extends React.Component {
     // const width = (maxX - minX) + 1
     // const height = (maxY - minY) + 1
 
-    const Cell = styled.div`
-      height: 50px;
-      width: 50px;
-      text-align: center;
-    `
-
-    const SelectedCell = styled(Cell)`
-      background-color: yellow;
-    `
-
-    const AdjacentCell = styled(Cell)`
-      border: 2px dashed;
-    `
-
-    const EmptyCell = styled(Cell)`
-      visibility: hidden;
-    `
-
-    const RotatedGrid = styled.div`
-      display: flex;
-      align-items: center;
-      transform: rotate(-45deg);
-    `
 
     // TODO evaluate changing to all relative positions
     const column = []
@@ -81,11 +78,11 @@ class Grid extends React.Component {
         if (!tileMatched) {
           if (adjacent) {
             if (selectedHandTile && selectedGridCoord && x === selectedGridCoord.x && y === selectedGridCoord.y) {
-              row.push(<SelectedCell key={`${x} ${y}`}>
+              row.push(<Cell key={`${x} ${y}`}>
                 <Rotater size={50} handleRotate={() => rotateHandTile(selectedHandTile.tileIdx)}>
-                  <Tile tile={selectedHandTile} size={50} numRotations={handRotations.get(selectedHandTile.tileIdx) || 0} />
+                  <Tile selected tile={selectedHandTile} size={50} numRotations={handRotations.get(selectedHandTile.tileIdx) || 0} />
                 </Rotater>
-              </SelectedCell>)
+              </Cell>)
             } else {
               row.push(<AdjacentCell
                 size={50} key={`${x} ${y}`} onClick={() => {

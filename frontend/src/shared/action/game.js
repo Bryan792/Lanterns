@@ -53,7 +53,7 @@ export const placeTile = () => (dispatch: Function, getState: Function, socket: 
       tileIdx: selectedHandTileIdx,
       x: selectedGridCoord.x,
       y: selectedGridCoord.y,
-      numRotations: state.game.getIn(['handRotations', selectedHandTileIdx]) || 0,
+      numRotations: (state.game.getIn(['handRotations', selectedHandTileIdx]) || 0) % 4,
     })
   }
 }

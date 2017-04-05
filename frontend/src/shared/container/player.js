@@ -11,7 +11,6 @@ import Player from '../component/player'
 const mapStateToProps = state => ({
   selectedHandTileIdx: state.game.get('selectedHandTileIdx'),
   selectedHandLantern: state.game.get('selectedHandLantern'),
-  handRotations: state.game.get('handRotations'),
 })
 
 const mapDispatchToProps = dispatch => ({
