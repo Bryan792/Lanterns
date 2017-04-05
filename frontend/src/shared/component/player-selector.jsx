@@ -1,5 +1,18 @@
 // TODO: fix flow annotations
 import React from 'react'
+import styled from 'styled-components'
+
+const NameInput = styled.input`
+  font-size: 1.3em;
+`
+
+const NameSubmit = styled.input`
+  font-size: 1.3em;
+`
+
+const Name = styled.div`
+  font-size: 1.3em;
+`
 
 class PlayerSelector extends React.Component {
   constructor(props: props) {
@@ -42,14 +55,14 @@ class PlayerSelector extends React.Component {
     } = this.props
     let row
     if (player) {
-      row = <div>{player.name}</div>
+      row = <Name>{player.name}</Name>
     } else if (!shouldShowSubmit) {
       row = null
     } else {
       row =
         (<form onSubmit={this.handleSubmit}>
-          <input type="text" value={this.state.name} onChange={this.handleNameChange} />
-          <input type="submit" value="Submit" />
+          <NameInput type="text" placeholder="Player Name" value={this.state.name} onChange={this.handleNameChange} />
+          <NameSubmit type="submit" value="Join" />
         </form>)
     }
 

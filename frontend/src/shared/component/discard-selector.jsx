@@ -57,9 +57,7 @@ class DiscardSelector extends React.Component {
                 onClick={() => {
                   if (this.state.lanterns[color] !== lanterns[color]) { this.setState({ lanterns: { ...this.state.lanterns, [color]: (this.state.lanterns[color] || 0) + 1 } }) }
                 }}
-              >
-          +
-        </button>
+              />
               <LanternContainer>
                 <Lantern color={color} count={this.state.lanterns[color] || 0} />
               </LanternContainer>
@@ -67,9 +65,7 @@ class DiscardSelector extends React.Component {
                 onClick={() => {
                   if (this.state.lanterns[color] > 0) { this.setState({ lanterns: { ...this.state.lanterns, [color]: this.state.lanterns[color] - 1 } }) }
                 }}
-              >
-          -
-        </button>
+              />
             </Col>,
         )}
         </Row>

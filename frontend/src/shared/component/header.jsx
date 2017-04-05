@@ -10,6 +10,9 @@ import { HOME_PAGE_ROUTE } from '../routes'
 const StyledHeader = styled.header`
   display: flex;
   justify-content: center;
+  border-bottom: 1px solid #EEE;
+  padding: 1em 0;
+  margin-bottom: 1em;
 `
 
 const HeaderLink = styled(NavLink)`
