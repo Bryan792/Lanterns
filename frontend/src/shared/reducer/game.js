@@ -24,8 +24,14 @@ const initialState = Immutable.fromJS({
 
 const gameReducer = (state: Immut = initialState, action: { type: string, payload: any }) => {
   switch (action.type) {
-    case LOAD_GAME_ASYNC_SUCCESS:
-      return state.set('gameData', action.payload)
+    case LOAD_GAME_ASYNC_SUCCESS: {
+      let newState = state.set('gameData', action.payload)
+      // TODO relook at this, should Tile just detect that its not in hand?:w
+      action.payload.grid.forEach((tile) => {
+        newState = newState.deleteIn(['handRotations', tile.tileIdx])
+      })
+      return newState
+    }
     case PLAYER_SELECTED:
       return state.set('playerDir', action.payload)
     case SELECT_HAND_TILE:
