@@ -23,6 +23,7 @@ type Props = {
 const Container = styled.div`
     width: 350px;
     border: 2px solid black;
+    border-radius: 5px;
   `
 
 const TileContainer = styled.button`

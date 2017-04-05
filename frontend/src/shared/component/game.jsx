@@ -27,6 +27,18 @@ const DIR_SOUTH = 'South'
 const DIR_WEST = 'West'
 // eslint-disable-next-line no-unused-vars
 const DIR_ARRAY = [DIR_NORTH, DIR_EAST, DIR_SOUTH, DIR_WEST]
+const DedicationArea = styled(Col)`
+  border: 2px solid black;
+  border-radius: 5px 0 0 5px;
+  border-right: 0;
+  padding: 2px;
+`
+const LanternsArea = styled(Col)`
+  border: 2px solid black;
+  border-radius: 0 5px 5px 0;
+  border-left: 0;
+  padding: 2px;
+`
 
 class Game extends React.Component {
   componentDidMount() {
@@ -122,18 +134,18 @@ class Game extends React.Component {
               }}
             >
 
-              <Col>
+              <LanternsArea>
                 {Object.keys(gameData.lanterns).sort((color1, color2) => gameData.lanterns[color2] - gameData.lanterns[color1]).map(color => <LanternContainer
                   key={color}
                 >
                   <Lantern color={color} count={gameData.lanterns[color]} />
                 </LanternContainer>,
         )}
-              </Col>
+              </LanternsArea>
 
               <Grid />
 
-              <Col>
+              <DedicationArea>
                 {
         ['uniques', 'threePair', 'fourOfAKind', 'fours']
           .filter(type => gameData.dedications[type].length > 0,
@@ -142,7 +154,7 @@ class Game extends React.Component {
           <div key={type}>
             <Dedication points={gameData.dedications[type][0]} type={type} />
           </div>)}
-              </Col>
+              </DedicationArea>
 
             </Row>
           </SpacedCol>
