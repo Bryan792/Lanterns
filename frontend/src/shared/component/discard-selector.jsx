@@ -49,34 +49,36 @@ class DiscardSelector extends React.Component {
   render() {
     const { lanterns, handleDiscard } = this.props
     return (
-      <Row>
-        {Object.keys(lanterns).filter(color => lanterns[color] > 0).sort((color1, color2) => lanterns[color2] - lanterns[color1]).map(color =>
-          <Col key={color}>
-            <button
-              onClick={() => {
-                if (this.state.lanterns[color] !== lanterns[color]) { this.setState({ lanterns: { ...this.state.lanterns, [color]: (this.state.lanterns[color] || 0) + 1 } }) }
-              }}
-            >
+      <Col>
+        <Row>
+          {Object.keys(lanterns).filter(color => lanterns[color] > 0).sort((color1, color2) => lanterns[color2] - lanterns[color1]).map(color =>
+            <Col key={color}>
+              <button
+                onClick={() => {
+                  if (this.state.lanterns[color] !== lanterns[color]) { this.setState({ lanterns: { ...this.state.lanterns, [color]: (this.state.lanterns[color] || 0) + 1 } }) }
+                }}
+              >
           +
         </button>
-            <LanternContainer>
-              <Lantern color={color} count={this.state.lanterns[color] || 0} />
-            </LanternContainer>
-            <button
-              onClick={() => {
-                if (this.state.lanterns[color] > 0) { this.setState({ lanterns: { ...this.state.lanterns, [color]: this.state.lanterns[color] - 1 } }) }
-              }}
-            >
+              <LanternContainer>
+                <Lantern color={color} count={this.state.lanterns[color] || 0} />
+              </LanternContainer>
+              <button
+                onClick={() => {
+                  if (this.state.lanterns[color] > 0) { this.setState({ lanterns: { ...this.state.lanterns, [color]: this.state.lanterns[color] - 1 } }) }
+                }}
+              >
           -
         </button>
-          </Col>,
+            </Col>,
         )}
+        </Row>
         <button
           onClick={() => {
             handleDiscard(this.state.lanterns)
           }}
         >Discard</button>
-      </Row>
+      </Col>
     )
   }
 }

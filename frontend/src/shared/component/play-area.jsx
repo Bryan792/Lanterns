@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { SpacedRow } from './styled-flex'
+import { SpacedRow, Col } from './styled-flex'
 import Tile from '../container/tile'
 import Rotater from './rotater'
 import Button from './button'
@@ -20,7 +20,7 @@ type Props = {
   gameData: {},
 }
 
-const Container = styled.div`
+const Container = styled(Col)`
     width: 350px;
     border: 2px solid black;
     border-radius: 5px;

@@ -2,7 +2,7 @@ import React from 'react'
 import Immutable from 'immutable'
 import styled from 'styled-components'
 
-import { Row } from './styled-flex'
+import { Row, Col } from './styled-flex'
 import Lantern from './lantern'
 import Button from './button'
 
@@ -76,22 +76,24 @@ class DedicationSelector extends React.Component {
     `
 
     return (
-      <div>
-        {['uniques', 'threePair', 'fourOfAKind'].filter(type => (gameData.dedications[type].length > 0 || gameData.dedications.fours.length > 0) && possibleDedications[type]).map(type => <button
-          onClick={() => {
-            this.setState({
-              dedicationType: type,
-              lanterns: Immutable.Set.of(...possibleDedications[type].slice(-neededColors[type])),
-            })
-          }}
-          key={type}
-        >
-          {type}
-        </button>,
+      <Col>
+        <Row>
+          {['uniques', 'threePair', 'fourOfAKind'].filter(type => (gameData.dedications[type].length > 0 || gameData.dedications.fours.length > 0) && possibleDedications[type]).map(type => <button
+            onClick={() => {
+              this.setState({
+                dedicationType: type,
+                lanterns: Immutable.Set.of(...possibleDedications[type].slice(-neededColors[type])),
+              })
+            }}
+            key={type}
+          >
+            {type}
+          </button>,
       )}
+        </Row>
 
         {possibleDedications[this.state.dedicationType] &&
-          <div>
+          <Col>
             <Row>
 
               {possibleDedications[this.state.dedicationType].sort((color1, color2) => playerLanterns[color2] - playerLanterns[color1]).map(color =>
@@ -108,12 +110,12 @@ class DedicationSelector extends React.Component {
                 </LanternContainer>,
       )}
             </Row>
+
             {neededColors[this.state.dedicationType] !== this.state.lanterns.size ?
               <div>
             Select exactly {neededColors[this.state.dedicationType]} colors
-      </div>
+            </div>
 :
-
               <button
                 onClick={() => {
                   const giveLanterns = {}
@@ -139,11 +141,11 @@ class DedicationSelector extends React.Component {
       Buy
     </button>
     }
-          </div>
+          </Col>
       }
         <Button label="Skip" handleClick={skipTurnStep} />
 
-      </div>
+      </Col>
     )
   }
 }
