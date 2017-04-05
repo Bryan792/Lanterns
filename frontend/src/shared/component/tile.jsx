@@ -24,7 +24,7 @@ const ColoredTile = styled.div`
     border-style: solid;
     border-width: ${props => props.size / 4}px;
     border-color: ${props => `${props.tile.North} ${props.tile.East} ${props.tile.South} ${props.tile.West}`};
-    transition: transform 250ms linear;
+    transition: transform 150ms linear;
     transform: rotate(${props => props.rotation}deg);
     background-color: ${props => (props.selected ? 'yellow' : 'grey')};
     font-size: ${props => props.size / 4}px;

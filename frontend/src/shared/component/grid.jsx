@@ -25,7 +25,17 @@ const RotatedGrid = styled.div`
       transform: rotate(-45deg);
     `
 
+let SelectedTile = styled(Tile)`
+`
+
 class Grid extends React.Component {
+  componentWillUpdate(nextProps) {
+    // TODO does this logic belong here or should it be moved into the Tile itself?
+    if (this.props.selectedHandTile && nextProps.selectedHandTile && this.props.selectedHandTile.tileIdx !== nextProps.selectedHandTile.tileIdx) {
+      SelectedTile = styled(Tile)`
+    `
+    }
+  }
 
   props: {
   grid: [],
@@ -80,7 +90,7 @@ class Grid extends React.Component {
             if (selectedHandTile && selectedGridCoord && x === selectedGridCoord.x && y === selectedGridCoord.y) {
               row.push(<Cell key={`${x} ${y}`}>
                 <Rotater size={50} handleRotate={() => rotateHandTile(selectedHandTile.tileIdx)}>
-                  <Tile selected tile={selectedHandTile} size={50} numRotations={handRotations.get(selectedHandTile.tileIdx) || 0} />
+                  <SelectedTile selected tile={selectedHandTile} size={50} numRotations={handRotations.get(selectedHandTile.tileIdx) || 0} />
                 </Rotater>
               </Cell>)
             } else {
